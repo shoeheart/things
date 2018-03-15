@@ -15,8 +15,27 @@ ActiveRecord::Schema.define(version: 20180106231946) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "species", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index(
+      ["name"],
+      unique: true,
+      using: :btree
+    )
+  end
+
   create_table "animals", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
+    t.references(
+      :species,
+      foreign_key: {
+        name: "animals_fk_species"
+      },
+      index: true,
+      null: false
+    )
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

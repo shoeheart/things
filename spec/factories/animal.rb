@@ -1,9 +1,10 @@
 FactoryBot.define do
-  sequence :name do |n|
+  sequence :animal_name do |n|
     "animal_#{n}"
   end
 
   factory :animal do
-    name { generate( :name ) }
+    name { generate( :animal_name ) }
+    association :species
   end
 end

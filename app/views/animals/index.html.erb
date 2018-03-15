@@ -6,6 +6,7 @@
   <thead class="thead-light">
     <tr>
       <th>Name</th>
+      <th>Species</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -14,6 +15,7 @@
     <% @animals.each do |animal| %>
       <tr>
         <td><%= animal.name %></td>
+        <td><%= animal.species_name %></td>
         <td>
           <%= link_to 'Show', animal, class: "btn btn-primary" %>
           <%= link_to 'Edit', edit_animal_path(animal), class: "btn btn-primary" %>

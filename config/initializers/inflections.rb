@@ -14,3 +14,8 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+# see https://stackoverflow.com/questions/17994428/with-a-model-where-the-name-is-the-same-single-as-plural-has-many-through-i
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.uncountable %w( species )
+end

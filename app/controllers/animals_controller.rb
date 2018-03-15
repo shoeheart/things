@@ -4,12 +4,15 @@ class AnimalsController < ApplicationController
   # GET /animals
   # GET /animals.json
   def index
-    @animals = Animal.all
+    # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
+    @animals = Animal.all.joins( :species ).select( "animals.*, species.name as species_name" )
   end
 
   # GET /animals/1
   # GET /animals/1.json
   def show
+    # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
+    @animal = Animal.preload( :species ).find( params[:id] )
   end
 
   # GET /animals/new
