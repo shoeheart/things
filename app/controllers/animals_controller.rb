@@ -1,27 +1,47 @@
 class AnimalsController < ApplicationController
-  before_action :set_animal, only: [:show, :edit, :update, :destroy]
+  #before_action :set_animal, only: [:show, :edit, :update, :destroy]
+  before_action :set_animal, only: [:edit, :update, :destroy]
 
   # GET /animals
   # GET /animals.json
   def index
     # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
-    @animals = Animal.all.joins( :species ).select( "animals.*, species.name as species_name" )
+    @animals =
+      Animal
+        .joins( :species )
+        .select( "animals.*, species.name as species_name" )
+        .order( 'animals.name' )
   end
 
   # GET /animals/1
   # GET /animals/1.json
   def show
     # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
-    @animal = Animal.preload( :species ).find( params[:id] )
+    @animal =
+      Animal
+        .joins( :species )
+        .select(
+          "animals.*, species.id as species_id, species.name as species_name"
+        )
+        .find( params[:id] )
   end
 
   # GET /animals/new
   def new
     @animal = Animal.new
+    @species = Species.all.order_by( :name )
   end
 
   # GET /animals/1/edit
   def edit
+    @species = Species.all.order( :name )
+    @animal =
+      Animal
+        .joins( :species )
+        .select(
+          "animals.*, species.id as species_id, species.name as species_name"
+        )
+        .find( params[:id] )
   end
 
   # POST /animals
@@ -72,6 +92,6 @@ class AnimalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def animal_params
-      params.require(:animal).permit(:name)
+      params.require(:animal).permit(:name, :species_id)
     end
 end
