@@ -2,6 +2,14 @@
 
 <h1>Animals</h1>
 
+<%#
+  use data-* method of firing a link on first page load
+  to populate dashboard after page initially loads.
+  Subsequent use of "add animal" form on this page
+  will use Rails.ajax call directly to replace the contents of
+  dashboard-totals div with latest counts
+%>
+
 <div id="dashboard-totals"><%=
   link_to ".",
   url_for( {controller: "animals", action: "totals"} ),
