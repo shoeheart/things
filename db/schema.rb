@@ -26,12 +26,48 @@ ActiveRecord::Schema.define(version: 20180106231946) do
     )
   end
 
+  create_table "toy_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index(
+      ["name"],
+      unique: true,
+      using: :btree
+    )
+  end
+
   create_table "animals", force: :cascade do |t|
     t.string "name", null: false
+    t.date "birth_date", null: false
+    t.boolean "is_vaccinated", null: false
     t.references(
       :species,
       foreign_key: {
         name: "animals_fk_species"
+      },
+      index: true,
+      null: false
+    )
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "toys", force: :cascade do |t|
+    t.date "acquired_on", null: false
+    t.references(
+      :animal,
+      foreign_key: {
+        name: "toys_fk_animals",
+        on_delete: :cascade
+      },
+      index: true,
+      null: false,
+    )
+    t.references(
+      :toy_type,
+      foreign_key: {
+        name: "toys_fk_toy_types"
       },
       index: true,
       null: false

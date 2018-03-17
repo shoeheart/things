@@ -7,6 +7,16 @@
   <strong>Species:</strong>
   <%= @animal.species_name %>
 </p>
+<h3>Toys (<%= @toys.length %>)</h3>
+<% @toys.each { | toy | %>
+<p>
+  <strong>Type:</strong>
+  <%= toy.toy_type_name %>
+  <br/>
+  <strong>Acquired On:</strong>
+  <%= toy.acquired_on %>
+</p>
+<% } %>
 
 <%= link_to 'Edit', edit_animal_path(@animal) %> |
 <%= link_to 'Back', animals_path %>

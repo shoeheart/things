@@ -22,7 +22,11 @@ class AnimalsController < ApplicationController
     @animals =
       Animal
         .joins( :species )
-        .select( "animals.*, species.name as species_name" )
+        .joins( :toys )
+        .select(
+          "animals.id, animals.name, species.name as species_name, count(toys.id) as toy_count"
+        )
+        .group( "animals.id, animals.name, species.name" )
         .order( 'animals.name' )
     @animal = Animal.new
     @species = Species.all.order( :name )
@@ -39,6 +43,14 @@ class AnimalsController < ApplicationController
           "animals.*, species.id as species_id, species.name as species_name"
         )
         .find( params[:id] )
+    @toys =
+      @animal.toys
+        .joins( :toy_type )
+        .select(
+          "toys.*, toy_types.id as toy_type_id, toy_types.name as toy_type_name"
+        )
+        .where( animal_id: params[:id] )
+        .order( "toys.acquired_on" )
   end
 
   # GET /animals/new
