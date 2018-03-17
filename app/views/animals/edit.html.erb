@@ -13,7 +13,7 @@
     )
   %>
   <br/>
-  <%= f.submit "Save Changes", data: { disable: true, disable_with: "Saving..." } %>
+  <%= f.submit "Save Changes", data: { remote: true, disable: true, disable_with: "Saving..." } %>
 <% end %>
 
 <%= link_to 'Show', @animal %> |

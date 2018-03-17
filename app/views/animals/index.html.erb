@@ -2,6 +2,16 @@
 
 <h1>Animals</h1>
 
+<div id="dashboard-totals"><%=
+  link_to ".",
+  url_for( {controller: "animals", action: "totals"} ),
+  method: :patch,
+  remote: true,
+  id: "dashboard-link"
+%></div>
+<%= javascript_tag '$("a#dashboard-link")[0].click();' %>
+<hr/>
+
 <table class="table">
   <thead class="thead-light">
     <tr>
@@ -11,21 +21,34 @@
     </tr>
   </thead>
 
-  <tbody>
-    <% @animals.each do |animal| %>
-      <tr>
-        <td><%= animal.name %></td>
-        <td><%= animal.species_name %></td>
-        <td>
-          <%= link_to 'Show', animal, class: "btn btn-primary" %>
-          <%= link_to 'Edit', edit_animal_path(animal), class: "btn btn-primary" %>
-          <%= link_to 'Destroy', animal, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
-        </td>
-      </tr>
-    <% end %>
+  <tbody id="animals">
+    <%= render @animals %>
   </tbody>
 </table>
 
 <br>
 
 <%= link_to 'New Animal', new_animal_path, class: "btn btn-primary" %>
+<br/>
+<a href="#" onclick="this.style.backgroundColor='#990000'; return false;">Paint it red</a>
+<br/>
+<a href="#" data-background-color="#990000">Paint it red</a>
+<a href="#" data-background-color="#009900" data-text-color="#FFFFFF">Paint it green</a>
+<a href="#" data-background-color="#000099" data-text-color="#FFFFFF">Paint it blue</a>
+
+<hr/>
+
+<%= form_with( model: @animal ) do |f| %>
+  <%= f.label :name %>: <%= f.text_field :name %>
+  <br/>
+  <%= f.label :species_id, "Species" %>: <%=
+    f.collection_select(
+      :species_id,
+      @species,
+      :id,
+      :name
+    )
+  %>
+  <br/>
+  <%= f.submit "Add Animal", data: { remote: true, disable: true, disable_with: "Adding..." } %>
+<% end %>

@@ -1,0 +1,9 @@
+      <tr>
+        <td><%= animal.name %></td>
+        <td><%= animal.species_name %></td>
+        <td>
+          <%= link_to 'Show', animal, class: "btn btn-primary" %>
+          <%= link_to 'Edit', edit_animal_path(animal), class: "btn btn-primary" %>
+          <%= link_to 'Destroy', animal, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
+        </td>
+      </tr>

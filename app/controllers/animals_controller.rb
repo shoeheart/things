@@ -2,6 +2,19 @@ class AnimalsController < ApplicationController
   #before_action :set_animal, only: [:show, :edit, :update, :destroy]
   before_action :set_animal, only: [:edit, :update, :destroy]
 
+  # /ujs/animals_totals
+  def totals
+    @species_totals =
+      Animal
+        .joins( :species )
+        .group( "species.name" )
+        .order( "species.name" )
+        .count
+
+    # allow controller to respond to Ajax request
+    # format.js
+  end
+
   # GET /animals
   # GET /animals.json
   def index
@@ -11,6 +24,8 @@ class AnimalsController < ApplicationController
         .joins( :species )
         .select( "animals.*, species.name as species_name" )
         .order( 'animals.name' )
+    @animal = Animal.new
+    @species = Species.all.order( :name )
   end
 
   # GET /animals/1
@@ -29,7 +44,7 @@ class AnimalsController < ApplicationController
   # GET /animals/new
   def new
     @animal = Animal.new
-    @species = Species.all.order_by( :name )
+    @species = Species.all.order( :name )
   end
 
   # GET /animals/1/edit
@@ -51,7 +66,17 @@ class AnimalsController < ApplicationController
 
     respond_to do |format|
       if @animal.save
+        # re-read animal to add in the species_name synthetic attribute
+        @animal =
+          Animal
+            .joins( :species )
+            .select(
+              "animals.*, species.id as species_id, species.name as species_name"
+            )
+            .find( @animal.id )
         format.html { redirect_to @animal, notice: 'Animal was successfully created.' }
+        # allow controller to respond to Ajax request
+        format.js
         format.json { render :show, status: :created, location: @animal }
       else
         format.html { render :new }
@@ -80,6 +105,7 @@ class AnimalsController < ApplicationController
     @animal.destroy
     respond_to do |format|
       format.html { redirect_to animals_url, notice: 'Animal was successfully destroyed.' }
+      format.js
       format.json { head :no_content }
     end
   end
