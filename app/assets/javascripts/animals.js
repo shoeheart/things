@@ -14,17 +14,6 @@ $(function() {
   return $("a[data-background-color]").click(function(e) {
     var backgroundColor, textColor;
     e.preventDefault();
-    backgroundColor = $(this).data("background-color");
-    textColor = $(this).data("text-color");
     return paintIt(this, $(this).data("background-color"), $(this).data("text-color"));
   });
 });
-
-$(document).ready(function() {
-  return $("#new_article").on("ajax:success", function(e, data, status, xhr) {
-    return $("#new_article").append(xhr.responseText);
-  }).on("ajax:error", function(e, xhr, status, error) {
-    return $("#new_article").append("<p>ERROR</p>");
-  });
-});
-
