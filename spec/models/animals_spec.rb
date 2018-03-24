@@ -6,8 +6,8 @@ RSpec.describe Animal, type: :model do
     animal.save!
     expect( animal.name ).to match( /animal_\d+/ )
     expect( animal.id).to be > 0
-    puts animal.name
-    puts animal.species
-    puts animal.species.name
+    # puts animal.name
+    # puts animal.species
+    # puts animal.species.name
   end
 end
