@@ -1,5 +1,4 @@
 class AnimalsController < ApplicationController
-  #before_action :set_animal, only: [:show, :edit, :update, :destroy]
   before_action :set_animal, only: [:edit, :update, :destroy]
 
   # /ujs/animals_totals
@@ -30,6 +29,7 @@ class AnimalsController < ApplicationController
         .order( 'animals.name' )
     @animal = Animal.new
     @species = Species.all.order( :name )
+byebug
   end
 
   # GET /animals/1

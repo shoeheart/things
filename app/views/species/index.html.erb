@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h3>Species</h3>
+
+<%= form_with( model: @species_new ) do |f| %>
+  <%= f.label :name %>: <%= f.text_field :name %>
+  <%=
+    f.submit(
+      "Add Species",
+      data: {
+        remote: false,
+        disable: true,
+        disable_with: "Adding..."
+      }
+    )
+  %>
+<% end %>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody id="species">
+    <%= render @species %>
+  </tbody>
+</table>

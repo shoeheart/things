@@ -6,5 +6,7 @@ FactoryBot.define do
   factory :animal do
     name { generate( :animal_name ) }
     association :species
+    is_vaccinated true
+    birth_date 3.years.ago
   end
 end

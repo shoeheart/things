@@ -5,38 +5,52 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-species = %w( Aardvark Bumblebee Cat Dog )
-species.each { | species |
-  Species.create( name: species )
+20.times {
+  Species.create( name: Faker::Ancient.unique.primordial )
 }
+species = Species.all.to_a
 toy_types = %w( Chewy Squeeky Plush Bone )
 toy_types.each { | toy_type |
   ToyType.create( name: toy_type )
 }
-{
-  'Alan': 'Aardvark',
-  'Buzz': 'Bumblebee',
-  'Patches': 'Cat',
-  'Fido': 'Dog',
-  'Arthur': 'Aardvark',
-  'Billy': 'Bumblebee',
-  'Mittens': 'Cat',
-  'Rover': 'Dog',
-}.each{ | name, species |
+toy_types = ToyType.all.to_a
+500.times {
   a =
     Animal.create(
-      name: name,
-      species: Species.find_by( name: species ),
+      name: Faker::Name.first_name,
+      species: species.sample,
       is_vaccinated: [ true, false ].sample,
-      birth_date: Random.rand( 100..3000 ).years.ago
+      birth_date: Random.rand( 100..2000 ).days.ago
     )
-  Random.rand(1..5).times { |i|
-    Toy.create(
-      toy_type: ToyType.find(
-        Random.rand( toy_types.length * 5 ).modulo( toy_types.length ) + 1
-      ),
-      acquired_on: Random.rand( 10..100 ).days.ago,
-      animal: a
+  Random.rand(0..3).times { |i|
+    #Toy.create(
+    a.toys << Toy.new(
+      toy_type: toy_types.sample,
+      acquired_on: Random.rand( 10..100 ).days.ago#,
+      #animal: a
     )
   }
+}
+200.times { |i|
+  first_name = Faker::Name.first_name
+  last_name = Faker::Name.last_name
+  p = Person.create( {
+    first_name: first_name,
+    last_name: last_name,
+    email: Faker::Internet.unique.email( "#{first_name} #{last_name}" ),
+    birth_date: Faker::Date.between( 8.years.ago, 50.years.ago ),
+  })
+
+  if ( [ true, false ].sample )
+    puts "Trying to adopt..."
+    ([ (1..2).to_a.sample, Animal.not_adopted.count ].min ).times { | i |
+      puts "Adopting #{(i+1).ordinalize} animal..."
+      animal = Animal.not_adopted.first
+      PetOwnership.create({
+        person: p,
+        animal: animal,
+        adopted_on: Faker::Date.between( animal.birth_date, Date.today )
+      })
+    }
+  end
 }

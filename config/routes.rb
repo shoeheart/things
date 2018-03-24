@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get '/' => 'welcome#index'
   resources :animals
+  resources :species
 
   # from https://blog.codeship.com/unobtrusive-javascript-via-ajax-rails/
   #scope :ujs, default: { format: :ujs } do

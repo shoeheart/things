@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20180106231946) do
       unique: true,
       using: :btree
     )
+    t.integer  "lock_version", null: false, :default => 0
   end
 
   create_table "toy_types", force: :cascade do |t|
@@ -35,6 +36,7 @@ ActiveRecord::Schema.define(version: 20180106231946) do
       unique: true,
       using: :btree
     )
+    t.integer  "lock_version", null: false, :default => 0
   end
 
   create_table "animals", force: :cascade do |t|
@@ -51,6 +53,7 @@ ActiveRecord::Schema.define(version: 20180106231946) do
     )
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "lock_version", null: false, :default => 0
   end
 
   create_table "toys", force: :cascade do |t|
@@ -74,6 +77,40 @@ ActiveRecord::Schema.define(version: 20180106231946) do
     )
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "lock_version", null: false, :default => 0
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "email", null: false
+    t.date "birth_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "lock_version", null: false, :default => 0
+  end
+
+  create_table "pet_ownerships", force: :cascade do |t|
+    t.date "adopted_on", null: false
+    t.references(
+      :animal,
+      foreign_key: {
+        name: "pet_ownerships_fk_animals",
+      },
+      index: true,
+      null: false,
+    )
+    t.references(
+      :person,
+      foreign_key: {
+        name: "pet_ownerships_fk_people",
+      },
+      index: true,
+      null: false,
+    )
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "lock_version", null: false, :default => 0
   end
 
 end
