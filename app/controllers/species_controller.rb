@@ -1,4 +1,6 @@
 class SpeciesController < ApplicationController
+  include Secured
+
   before_action(
     :set_species,
     only: [:show, :edit, :update, :destroy]

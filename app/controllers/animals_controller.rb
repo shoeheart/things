@@ -1,4 +1,6 @@
 class AnimalsController < ApplicationController
+  include Secured
+
   before_action :set_animal, only: [:edit, :update, :destroy]
 
   # /ujs/animals_totals

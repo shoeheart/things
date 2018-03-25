@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'omniauth-auth0'
 gem 'jquery-rails'
 gem 'bootstrap'
 
@@ -45,6 +46,7 @@ group :development, :test do
   gem 'factory_bot'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'dotenv'
 end
 
 group :development do
