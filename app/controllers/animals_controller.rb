@@ -31,7 +31,6 @@ class AnimalsController < ApplicationController
         .order( 'animals.name' )
     @animal = Animal.new
     @species = Species.all.order( :name )
-byebug
   end
 
   # GET /animals/1
