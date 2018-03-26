@@ -10,7 +10,7 @@ class Auth0Controller < ApplicationController
     # for complete information on 'omniauth.auth' contents.
     session[:userinfo] = request.env['omniauth.auth']
 
-    redirect_to '/'
+    redirect_to profile_path
   end
 
   # if user authentication fails on the provider side OmniAuth 

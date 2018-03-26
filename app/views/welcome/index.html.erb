@@ -5,9 +5,11 @@
   <p class="lead">Animals, Vegetables, and Minerals need management</p>
   <p>Not sure about the other things though</p>
 
-  <h2><img class="jumbo-thumbnail" src="https://cdn.auth0.com/styleguide/1.0.0/img/badge.svg"></h2>
-  <h1>RoR Auth0 Sample</h1>
-  <p>Step 1 - Login.</p>
-  <a class="btn btn-success btn-lg" href="/auth/auth0">Login</a>
+  <% if session[:userinfo] %>
+    <p>Already logged in.  Feel free to manage some things!</p>
+    <br/>
+    <p>Or you may <%= link_to "logout", logout_path %></p>
+  <% else %>
+    <a class="btn btn-success btn-lg" href="/auth/auth0">Login</a>
+  <% end %>
 </div>
-

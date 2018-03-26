@@ -1,0 +1,6 @@
+client ID
+814765799323-dfb0lvfhl8b477q8pc9g0u5lip614bpc.apps.googleusercontent.com
+
+client secret
+OHndaMv8DVf2K6CMHUJx9zpk
+

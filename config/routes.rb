@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     patch 'animals_totals' => 'animals#totals'
   #end
 
+  get 'profile' => 'profile#show'
+  get 'logout' => 'logout#logout'
   get '/auth/auth0/callback' => 'auth0#callback'
   get '/auth/failure' => 'auth0#failure'
+
+  root 'welcome#index'
 end
