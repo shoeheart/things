@@ -4,6 +4,18 @@
 </section>
 <section class="container">
   <div class="panel panel-default">
+    <div class="panel-heading">say hello</div>
+    <div class="panel-body">
+      <pre><%= say_hello %></pre>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Permissions for this user</div>
+    <div class="panel-body">
+      <pre><%= get_permissions %></pre>
+    </div>
+  </div>
+  <div class="panel panel-default">
     <div class="panel-heading">Normalized User Profile</div>
     <div class="panel-body">
       <pre><%= JSON.pretty_generate(@user[:info]) %></pre>
@@ -13,6 +25,12 @@
     <div class="panel-heading">Full User Profile</div>
     <div class="panel-body">
       <pre><%= JSON.pretty_generate(@user[:extra][:raw_info]) %></pre>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Full OmniAuth Hash</div>
+    <div class="panel-body">
+      <pre><%= JSON.pretty_generate(@user) %></pre>
     </div>
   </div>
 </section>
