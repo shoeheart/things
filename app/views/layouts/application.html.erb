@@ -28,6 +28,9 @@
             <a class="nav-link" href="/">Home</a>
           </li>
           <% if session[:userinfo] %>
+              <li class="nav-item <%= 'active' if params[:controller] == 'posts' %>">
+                <a class="nav-link" href="<%= posts_path %>">Posts</a>
+              </li>
             <% if read_animals? %>
               <li class="nav-item <%= 'active' if params[:controller] == 'animals' %>">
                 <a class="nav-link" href="<%= animals_path %>">Animals</a>

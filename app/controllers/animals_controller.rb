@@ -20,38 +20,52 @@ class AnimalsController < ApplicationController
   # GET /animals.json
   def index
     # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
-    @animals =
-      Animal
-        .joins( :species )
-        .joins( :toys )
-        .select(
-          "animals.id, animals.name, species.name as species_name, count(toys.id) as toy_count"
-        )
-        .group( "animals.id, animals.name, species.name" )
-        .order( 'animals.name' )
+    @animals = animals_with_display_attributes
     @animal = Animal.new
     @species = Species.all.order( :name )
+  end
+
+  def animals_with_display_attributes
+    Animal
+      .joins( :species )
+      .left_outer_joins( :toys )
+      .select("
+        animals.id, 
+        animals.name, 
+        species.name as species_name, 
+        count(toys.id) as toy_count
+      ")
+      .group( "animals.id, animals.name, species.name" )
+      .order( 'animals.name' )
+  end
+
+  def animal_with_display_attributes( id )
+    Animal
+      .joins( :species )
+      .left_outer_joins( :toys )
+      .select("
+        animals.id, 
+        animals.name, 
+        species.name as species_name, 
+        count(toys.id) as toy_count
+      ")
+      .group( "animals.id, animals.name, species.name" )
+      .find( id )
   end
 
   # GET /animals/1
   # GET /animals/1.json
   def show
     # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
-    @animal =
-      Animal
-        .joins( :species )
-        .select(
-          "animals.*, species.id as species_id, species.name as species_name"
-        )
-        .find( params[:id] )
+    @animal = animal_with_display_attributes( params[ :id ] )
     @toys =
       @animal.toys
         .joins( :toy_type )
         .select(
           "toys.*, toy_types.id as toy_type_id, toy_types.name as toy_type_name"
         )
-        .where( animal_id: params[:id] )
         .order( "toys.acquired_on" )
+        # .where( animal_id: params[:id] )
   end
 
   # GET /animals/new
@@ -63,31 +77,19 @@ class AnimalsController < ApplicationController
   # GET /animals/1/edit
   def edit
     @species = Species.all.order( :name )
-    @animal =
-      Animal
-        .joins( :species )
-        .select(
-          "animals.*, species.id as species_id, species.name as species_name"
-        )
-        .find( params[:id] )
+    @animal = animal_with_display_attributes( params[ :id ] )
   end
 
   # POST /animals
   # POST /animals.json
   def create
-    @animal = Animal.new(animal_params)
+    @animal = Animal.new( animal_params )
 
     respond_to do |format|
-      if @animal.save
-        # re-read animal to add in the species_name synthetic attribute
-        @animal =
-          Animal
-            .joins( :species )
-            .select(
-              "animals.*, species.id as species_id, species.name as species_name"
-            )
-            .find( @animal.id )
-        format.html { redirect_to @animal, notice: 'Animal was successfully created.' }
+      if @animal.save!
+        # re-read animal to add in the species and toy synthetic attributes
+        @animal = animal_with_display_attributes( @animal.id )
+        format.html { redirect_to @animals, notice: 'Animal was successfully created.' }
         # allow controller to respond to Ajax request
         format.js
         format.json { render :show, status: :created, location: @animal }
@@ -131,6 +133,12 @@ class AnimalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def animal_params
-      params.require(:animal).permit(:name, :species_id)
+      params.require(:animal).permit(
+        :name, 
+        :species_id, 
+        :birth_date, 
+        :is_vaccinated,
+        :image
+      )
     end
 end

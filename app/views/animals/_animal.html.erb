@@ -2,6 +2,19 @@
         <td><%= animal.name %></td>
         <td><%= animal.species_name %></td>
         <td><%= animal.toy_count %></td>
+
+<%
+=begin
+%>
+        <td>
+          <% if animal.image.attached? %>
+            <%= image_tag animal.image %>
+          <% end %>
+        </td>
+<%
+=end
+%>
+          
         <% if write_animals? %>
         <td>
             <%= link_to 'Show', animal, class: "btn btn-primary" %>

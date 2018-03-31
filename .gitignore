@@ -10,8 +10,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+/storage/*
 !/log/.keep
 !/tmp/.keep
+!/tmp/storage
+!/tmp/storage/.keep
+!/storage/.keep
 
 /node_modules
 /yarn-error.log

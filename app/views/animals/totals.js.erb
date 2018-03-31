@@ -2,4 +2,9 @@ $("#dashboard-totals").html("<%=
   escape_javascript(
     render( partial: 'totals' )
   )
-%>")
+%>");
+// this fails to remove the clicker script element so we'll just
+// let it run
+// alert( $("initial-dashboard-clicker-script") );
+// $("initial-dashboard-clicker-script").remove();
+// alert( $("initial-dashboard-clicker-script") );

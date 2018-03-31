@@ -11,27 +11,41 @@
 %>
 
 <div id="dashboard-totals"><%=
-  link_to ".",
+  link_to "dashboard loading...",
   url_for( {controller: "animals", action: "totals"} ),
   method: :patch,
   remote: true,
   id: "dashboard-link"
 %></div>
-<%= javascript_tag '$("a#dashboard-link")[0].click();' %>
+<%#
+  Note that below click will only work first time page is loaded.
+  Subsequent turbolinks loads will already have replaced the dashboard-totals
+  with the actual dashboard, so the link will be gone.  Fix is
+  that whenever the js fires to populate dashboard-totals, must
+  also remove the javascript tag from the html.
+%>
+<%= javascript_tag '
+dashboardLink = $("a#dashboard-link")[0]
+if ( dashboardLink ) {
+  dashboardLink.click(); 
+}', id: "initial-dashboard-clicker-script" %>
 <hr/>
 <% if write_animals? %>
-<%= form_with( model: @animal ) do |f| %>
-  <%= f.label :name %>: <%= f.text_field :name %>
-  <%= f.label :species_id, "Species" %>: <%=
-    f.collection_select(
-      :species_id,
-      @species,
-      :id,
-      :name
-    )
-  %>
-  <%= f.submit "Add Animal", data: { remote: true, disable: true, disable_with: "Adding..." } %>
-<% end %>
+  <%= form_with( model: @animal, html: { id: 'add_animal_form' } ) do |f| %>
+    <%= f.label :name %>: <%= f.text_field :name %>
+    <%= f.label :species_id, "Species" %>: <%=
+      f.collection_select(
+        :species_id,
+        @species,
+        :id,
+        :name
+      )
+    %>
+    <%= f.label :birth_date %>: <%= f.date_field :birth_date %>
+    <%= f.label :is_vaccinated %>: <%= f.check_box :is_vaccinated %>
+    <%= f.label :image %>: <%= f.file_field :image, direct_upload: true %>
+    <%= f.submit "Add Animal", data: { remote: true, disable: true, disable_with: "Adding..." } %>
+  <% end %>
 <% end %>
 <hr/>
 
