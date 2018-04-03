@@ -1,11 +1,16 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "posts/new", type: :view do
   before(:each) do
-    assign(:post, Post.new(
-      :title => "MyString",
-      :content => "MyString"
-    ))
+    assign(
+      :post,
+      Post.new(
+        title: "MyString",
+        content: "MyString"
+      )
+    )
   end
 
   it "renders new post form" do

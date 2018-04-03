@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class LogoutController < ApplicationController
   include Secured
   include LogoutHelper

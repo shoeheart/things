@@ -1,7 +1,7 @@
+# frozen_string_literal: true
+
 class ProfileController < ApplicationController
-
   def show
-    @user = session[ :userinfo ]
+    @user = session[:userinfo]
   end
-
 end

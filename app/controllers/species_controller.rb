@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SpeciesController < ApplicationController
   include Secured
 
@@ -9,7 +11,7 @@ class SpeciesController < ApplicationController
   # GET /species
   # GET /species.json
   def index
-    @species = Species.all.order( :name )
+    @species = Species.all.order(:name)
     @species_new = Species.new
   end
 
@@ -35,8 +37,8 @@ class SpeciesController < ApplicationController
 
     respond_to do |format|
       if @species.save
-        format.html { redirect_to species_index_path, notice: 'Species was successfully created.' }
-        format.json { render :show, status: :created, location: @species}
+        format.html { redirect_to species_index_path, notice: "Species was successfully created." }
+        format.json { render :show, status: :created, location: @species }
       else
         format.html { render :new }
         format.json { render json: @species.errors, status: :unprocessable_entity }
@@ -49,8 +51,8 @@ class SpeciesController < ApplicationController
   def update
     respond_to do |format|
       if @species.update(speciesparams)
-        format.html { redirect_to @species, notice: 'Species was successfully updated.' }
-        format.json { render :show, status: :ok, location: @species}
+        format.html { redirect_to @species, notice: "Species was successfully updated." }
+        format.json { render :show, status: :ok, location: @species }
       else
         format.html { render :edit }
         format.json { render json: @specieserrors, status: :unprocessable_entity }
@@ -63,7 +65,7 @@ class SpeciesController < ApplicationController
   def destroy
     @species.destroy
     respond_to do |format|
-      format.html { redirect_to species_index_path, notice: 'Species was successfully destroyed.' }
+      format.html { redirect_to species_index_path, notice: "Species was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -77,6 +79,6 @@ class SpeciesController < ApplicationController
     # Never trust parameters from the scary internet,
     # only allow the white list through.
     def species_params
-      params.require(:species).permit( :name )
+      params.require(:species).permit(:name)
     end
 end

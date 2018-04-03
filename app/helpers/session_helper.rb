@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module SessionHelper
   def get_state
     state = SecureRandom.hex(24)
-    session['omniauth.state'] = state
+    session["omniauth.state"] = state
 
     state
   end
@@ -16,19 +18,19 @@ module SessionHelper
   end
 
   def write_animals?
-    get_permissions.include?( "read-write:animals" )
+    get_permissions.include?("read-write:animals")
   end
 
   def read_animals?
-    get_permissions.include?( "read:animals" ) || write_animals?
+    get_permissions.include?("read:animals") || write_animals?
   end
 
   def write_lookups?
-    get_permissions.include?( "read-write:lookups" )
+    get_permissions.include?("read-write:lookups")
   end
 
   def read_lookups?
-    get_permissions.include?( "read:lookups" ) || write_lookups?
+    get_permissions.include?("read:lookups") || write_lookups?
   end
 
   def say_hello

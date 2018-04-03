@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -17,7 +19,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
   config.cache_store = :memory_store
   # config.public_file_server.headers = {
-  #   'Cache-Control' => "public, max-age=#{2.days.seconds.to_i}"
+  #   "Cache-Control": "public, max-age=#{2.days.seconds.to_i}"
   # }
 
   # Don't care if the mailer can't send.
@@ -52,10 +54,11 @@ Rails.application.configure do
     Bullet.bullet_logger = true
     Bullet.console = true
     # Bullet.growl = true
-    # Bullet.xmpp = { :account  => 'bullets_account@jabber.org',
-                    # :password => 'bullets_password_for_jabber',
-                    # :receiver => 'your_account@jabber.org',
-                    # :show_online_status => true }
+    # Bullet.xmpp = {
+    #   :account  => 'bullets_account@jabber.org',
+    #   :password => 'bullets_password_for_jabber',
+    #   :receiver => 'your_account@jabber.org',
+    #   :show_online_status => true }
     Bullet.rails_logger = true
     # Bullet.honeybadger = true
     # Bullet.bugsnag = true

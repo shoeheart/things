@@ -1,6 +1,8 @@
-require_relative 'boot'
+# frozen_string_literal: true
 
-require 'rails/all'
+require_relative "boot"
+
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -17,11 +19,11 @@ module Things
 
     # Set this if you want to get the error_description
     OmniAuth.config.on_failure = Proc.new { |env|
-      message_key = env['omniauth.error.type']
-      error_description = Rack::Utils.escape(env['omniauth.error'].error_reason)
+      message_key = env["omniauth.error.type"]
+      error_description = Rack::Utils.escape(env["omniauth.error"].error_reason)
       new_path = "#{env['SCRIPT_NAME']}#{OmniAuth.config.path_prefix}/failure?message=
     => #{message_key}&error_description=#{error_description}"
-      Rack::Response.new(['302 Moved'], 302, 'Location' => new_path).finish
+      Rack::Response.new(["302 Moved"], 302, "Location": new_path).finish
     }
   end
 end

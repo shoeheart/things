@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Auth0Controller < ApplicationController
   def callback
     # OmniAuth places the User Profile information
@@ -8,7 +10,7 @@ class Auth0Controller < ApplicationController
     # session[:userinfo]['credentials']['id_token'].
     # Refer to https://github.com/auth0/omniauth-auth0#auth-hash
     # for complete information on 'omniauth.auth' contents.
-    session[:userinfo] = request.env['omniauth.auth']
+    session[:userinfo] = request.env["omniauth.auth"]
 
     redirect_to profile_path
   end
@@ -17,6 +19,6 @@ class Auth0Controller < ApplicationController
   # will redirect to /auth/failure,
   # passing the error message in the 'message' request param.
   def failure
-    @error_msg = request.params['message']
+    @error_msg = request.params["message"]
   end
 end

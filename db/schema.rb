@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -32,7 +34,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
       unique: true,
       using: :btree
     )
-    t.integer  "lock_version", null: false, :default => 0
+    t.integer "lock_version", null: false, default: 0
   end
 
   create_table "toy_types", force: :cascade do |t|
@@ -45,7 +47,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
       unique: true,
       using: :btree
     )
-    t.integer  "lock_version", null: false, :default => 0
+    t.integer "lock_version", null: false, default: 0
   end
 
   create_table "animals", force: :cascade do |t|
@@ -64,7 +66,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
     )
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "lock_version", null: false, :default => 0
+    t.integer "lock_version", null: false, default: 0
   end
 
   create_table "toys", force: :cascade do |t|
@@ -92,7 +94,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
     )
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "lock_version", null: false, :default => 0
+    t.integer "lock_version", null: false, default: 0
   end
 
   create_table "people", force: :cascade do |t|
@@ -102,7 +104,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
     t.date "birth_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "lock_version", null: false, :default => 0
+    t.integer "lock_version", null: false, default: 0
   end
 
   create_table "pet_ownerships", force: :cascade do |t|
@@ -129,7 +131,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
     )
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "lock_version", null: false, :default => 0
+    t.integer "lock_version", null: false, default: 0
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -139,17 +141,17 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index(
-      ["blob_id"], 
+      ["blob_id"],
       name: "index_active_storage_attachments_on_blob_id"
     )
     t.index(
       [
-        "record_type", 
-        "record_id", 
-        "name", 
+        "record_type",
+        "record_id",
+        "name",
         "blob_id"
-      ], 
-      name: "index_active_storage_attachments_uniqueness", 
+      ],
+      name: "index_active_storage_attachments_uniqueness",
       unique: true
     )
   end
@@ -163,8 +165,8 @@ ActiveRecord::Schema.define(version: 2018_03_31_201829) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index(
-      ["key"], 
-      name: "index_active_storage_blobs_on_key", 
+      ["key"],
+      name: "index_active_storage_blobs_on_key",
       unique: true
     )
   end

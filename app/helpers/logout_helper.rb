@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module LogoutHelper
   def logout_url
     domain = Rails.application.secrets.auth0_domain
@@ -9,17 +10,17 @@ module LogoutHelper
     }
 
     URI::HTTPS.build(
-      host: domain, 
-      path: '/logout', 
-      query: to_query( request_params )
+      host: domain,
+      path: "/logout",
+      query: to_query(request_params)
     )
   end
 
   private
 
-  def to_query(hash)
-    hash.map { |k, v| 
-      "#{k}=#{URI.escape(v)}" unless v.nil? 
-    }.reject(&:nil?).join('&')
-  end
+    def to_query(hash)
+      hash.map { |k, v|
+        "#{k}=#{URI.escape(v)}" unless v.nil?
+      }.reject(&:nil?).join("&")
+    end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Animal < ApplicationRecord
   has_one :pet_ownership
   has_one :person, through: :pet_ownership
@@ -11,7 +13,7 @@ class Animal < ApplicationRecord
     # even though you don't have associated person if this scope is true
     # left_outer_joins( :pet_ownership )
     # .where( "animal_id is null" )
-    where( "
+    where("
       animals.id not in ( select animal_id from pet_ownerships )
     ")
   }
@@ -20,20 +22,20 @@ class Animal < ApplicationRecord
     # note this causes double join when used to get to Person
     # joins( :pet_ownership )
     # .where( "pet_ownerships.animal_id is not null" )
-    where( "
+    where("
       animals.id in ( select animal_id from pet_ownerships )
     ")
   }
 
   scope :has_toys, -> {
     # joins( :toys )
-    where( "
+    where("
       animals.id in ( select animal_id from toys )
     ")
   }
 
   scope :has_no_toys, -> {
-    where( "
+    where("
       animals.id not in ( select animal_id from toys )
     ")
   }
