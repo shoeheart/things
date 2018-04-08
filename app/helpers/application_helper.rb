@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def component(component_name, locals = {}, &block)
     name = component_name.split("_").first

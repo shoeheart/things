@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ComponentGenerator < Rails::Generators::Base
   argument :component_name, required: true, desc: "Component name, e.g: button"
 
@@ -18,7 +20,7 @@ class ComponentGenerator < Rails::Generators::Base
 
   protected
 
-  def component_path
-    "frontend/components/#{component_name}"
-  end
+    def component_path
+      "frontend/components/#{component_name}"
+    end
 end

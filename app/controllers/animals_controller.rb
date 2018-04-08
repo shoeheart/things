@@ -5,23 +5,9 @@ class AnimalsController < ApplicationController
 
   before_action :set_animal, only: [:edit, :update, :destroy]
 
-  # /ujs/animals_totals
-  # def totals
-    # @species_totals =
-      # Animal
-        # .joins(:species)
-        # .group("species.name")
-        # .order("species.name")
-        # .count
-
-    # # allow controller to respond to Ajax request
-    # # format.js
-  # end
-
   # GET /animals
   # GET /animals.json
   def index
-    # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
     @animals = animals_with_display_attributes
     @animal = Animal.new
     @species = Species.all.order(:name)
@@ -62,7 +48,6 @@ class AnimalsController < ApplicationController
   # GET /animals/1
   # GET /animals/1.json
   def show
-    # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
     @animal = animal_with_display_attributes(params[:id])
     @species = Species.all.order(:name)
     @toys =
