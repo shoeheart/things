@@ -20,8 +20,9 @@ class AnimalsController < ApplicationController
       .select("
         animals.id,
         animals.name,
-        birth_date,
-        is_vaccinated,
+        animals.species_id,
+        animals.birth_date,
+        animals.is_vaccinated,
         species.name as species_name,
         count(toys.id) as toy_count
       ")
@@ -36,8 +37,9 @@ class AnimalsController < ApplicationController
       .select("
         animals.id,
         animals.name,
-        birth_date,
-        is_vaccinated,
+        animals.species_id,
+        animals.birth_date,
+        animals.is_vaccinated,
         species.name as species_name,
         count(toys.id) as toy_count
       ")
@@ -50,25 +52,22 @@ class AnimalsController < ApplicationController
   def show
     @animal = animal_with_display_attributes(params[:id])
     @species = Species.all.order(:name)
+    @toy_types = ToyType.all.order(:name)
     @toys =
       @animal.toys
         .joins(:toy_type)
-        .select(
-          "toys.*, toy_types.id as toy_type_id, toy_types.name as toy_type_name"
-        )
-        .order("toys.acquired_on")
+        .select("
+          toys.*,
+          toy_types.id as toy_type_id,
+          toy_types.name as toy_type_name
+        ")
+        .order("toys.acquired_on desc")
   end
 
   # GET /animals/new
   def new
     @animal = Animal.new
     @species = Species.all.order(:name)
-  end
-
-  # GET /animals/1/edit
-  def edit
-    @species = Species.all.order(:name)
-    @animal = animal_with_display_attributes(params[:id])
   end
 
   # POST /animals
@@ -80,14 +79,49 @@ class AnimalsController < ApplicationController
       if @animal.save!
         # re-read animal to add in the species and toy synthetic attributes
         @animal = animal_with_display_attributes(@animal.id)
-        format.html { redirect_to animals_path, notice: "Animal #{@animal.name} was successfully created." }
-        # allow controller to respond to Ajax request
-        format.js
+        format.html {
+          redirect_to animals_path,
+          notice: "Animal #{@animal.name} was successfully created."
+        }
         format.json { render :show, status: :created, location: @animal }
       else
         format.html { render :new }
         format.json { render json: @animal.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  # POST /animal/1/add_toy
+  def add_toy
+    @toy =
+      Toy.new(
+        animal_id: params[:id],
+        toy_type_id: params[:toy_type_id],
+        acquired_on: params[:acquired_on]
+      )
+
+    respond_to do |format|
+      format.html {
+        redirect_to animal_path(params[:id]),
+        notice: (
+          @toy.save ?
+            "Toy was successfully added." :
+            @toy.errors
+        )
+      }
+    end
+  end
+
+  # DELETE /animals/:id/delete_toy/:toy_id
+  def delete_toy
+    @toy = Toy.find(params[:toy_id])
+    @toy.delete
+
+    respond_to do |format|
+      format.html {
+        redirect_to animal_path(params[:id]),
+        notice: "Toy was successfully deleted."
+      }
     end
   end
 
@@ -110,7 +144,7 @@ class AnimalsController < ApplicationController
   def destroy
     @animal.destroy
     respond_to do |format|
-      format.html { redirect_to animals_url, notice: "Animal was successfully destroyed." }
+      format.html { redirect_to animals_url, notice: "Animal #{@animal.name} was successfully destroyed." }
       format.js
       format.json { head :no_content }
     end

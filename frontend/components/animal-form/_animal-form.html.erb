@@ -1,15 +1,65 @@
-  <%= form_with( model: animal, method: :put, html: { id: 'update_animal_form' } ) do |f| %>
-    <%= f.label :name %>: <%= f.text_field :name %><br/>
-    <%= f.label :species_id, "Species" %>: <%=
-      f.collection_select(
-        :species_id,
-        species,
-        :id,
-        :name
-      )
-    %><br/>
-    <%= f.label :birth_date %>: <%= f.date_field :birth_date %><br/>
-    <%= f.label :is_vaccinated %>: <%= f.check_box :is_vaccinated %><br/>
-    <%= f.label :image %>: <%= f.file_field :image, direct_upload: true %><br/>
-    <%= f.submit "Update", data: { remote: true, disable: true, disable_with: "Updating..." } %>
+<p id="notice"><%= notice %></p>
+
+<%=
+  form_with(
+    model: animal,
+    local: true,
+    method: :put,
+    html: { id: 'update_animal_form' }
+  ) do |f|
+%>
+  <%= f.label :name %>: <%= f.text_field :name %><br/>
+  <%= f.label :species_id, "Species" %>: <%=
+    f.collection_select(
+      :species_id,
+      species,
+      :id,
+      :name
+    )
+  %><br/>
+  <%= f.label :birth_date %>: <%= f.date_field :birth_date %><br/>
+  <%= f.label :is_vaccinated %>: <%= f.check_box :is_vaccinated %><br/>
+  <%= f.label :image %>: <%= f.file_field :image, direct_upload: true %><br/>
+  <%=
+    f.submit(
+      "Update",
+      data: {
+        disable: true,
+        disable_with: "Updating..."
+      }
+    )
+  %>
+<% end %>
+
+<h3>Toys</h3>
+<% if write_animals? %>
+  <%=
+    form_with(
+      url: animal_add_toy_path(
+        id: animal.id
+      ),
+      local: true,
+      method: :post
+    ) do |f|
+  %>
+      <%= f.label :toy_type_id, "Toy Type" %>: <%=
+        f.collection_select(
+          :toy_type_id,
+          @toy_types,
+          :id,
+          :name
+        )
+      %>
+      <%= f.label :acquired_on %>: <%= f.date_field :acquired_on %>
+      <%=
+        f.submit(
+          "Add Toy",
+          data: {
+            disable: false,
+            disable_with: "Adding..."
+          }
+        )
+      %>
   <% end %>
+<% end %>
+<%= c("toys", toys: toys, animal: animal ) %>

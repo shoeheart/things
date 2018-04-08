@@ -1,3 +1,11 @@
 <%= c("menu") do %>
-  <%= c("animal-form", animal: @animal, toys: @toys, species: @species) %>
+  <%=
+    c(
+        "animal-form",
+        animal: @animal,
+        toys: @toys,
+        toy_types: @toy_types,
+        species: @species
+    )
+  %>
 <% end %>

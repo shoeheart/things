@@ -8,9 +8,15 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import "init";
-
 import "components/menu/menu";
 import "components/home/home";
 import "components/profile/profile";
 import "components/animals/animals";
 import "components/animal-form/animal-form";
+import "components/toys/toys";
+import "components/toy/toy";
+import "components/toy_types/toy_types";
+import "components/toy_type/toy_type";
+import Rails from "rails-ujs";
+
+Rails.start();

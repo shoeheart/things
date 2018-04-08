@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   resources :animals
   resources :species
+  delete "/animals/:id/delete_toy/:toy_id(.:format)" => "animals#delete_toy", as: :animal_delete_toy
+  post "/animals/:id/add_toy(.:format)" => "animals#add_toy", as: :animal_add_toy
 
   get "profile" => "profile#show"
   get "logout" => "logout#logout"

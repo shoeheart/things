@@ -4,7 +4,12 @@
 
 <hr/>
 <% if write_animals? %>
-  <%= form_with( model: @animal, html: { id: 'add_animal_form' } ) do |f| %>
+  <%=
+    form_with(
+      model: @animal,
+      local: true,
+      html: { id: 'add_animal_form' }
+    ) do |f| %>
     <%= f.label :name %>: <%= f.text_field :name %>
     <%= f.label :species_id, "Species" %>: <%=
       f.collection_select(
@@ -40,4 +45,3 @@
     <% end %>
   </tbody>
 </table>
-
