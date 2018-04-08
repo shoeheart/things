@@ -3,7 +3,9 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "^3.4.1",
+    "activestorage": "^0.1.1",
     "auth0-lock": "^10.22.0",
+    "aws-sdk": "^2.222.1",
     "bootstrap": "^4.0.0",
     "jquery": "^3.3.1",
     "normalize.css": "^7.0.0",

@@ -19,7 +19,16 @@
   %><br/>
   <%= f.label :birth_date %>: <%= f.date_field :birth_date %><br/>
   <%= f.label :is_vaccinated %>: <%= f.check_box :is_vaccinated %><br/>
-  <%= f.label :image %>: <%= f.file_field :image, direct_upload: true %><br/>
+  <%= f.label :images %>: <%=
+    f.file_field(
+      :images,
+      multiple: true,
+      direct_upload: true
+    )
+  %><br/>
+  <% animal.images.each do |image| %>
+    <%= image_tag(image.variant(resize: "50x50")) %>
+  <% end %>
   <%=
     f.submit(
       "Update",

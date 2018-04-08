@@ -1,13 +1,13 @@
-      <tr>
-        <td><%= animal.name %></td>
-        <td><%= animal.species_name %></td>
-        <td><%= animal.toy_count %></td>
+<tr>
+  <td><%= animal.name %></td>
+  <td><%= animal.species_name %></td>
+  <td><%= animal.toy_count %></td>
+  <td><%= image_tag(animal.images.first.variant(resize: "50x50")) if animal.images.attached? %></td>
 
-        <% if write_animals? %>
-        <td>
-            <%= link_to 'Show', animal, class: "btn btn-primary" %>
-            <%= link_to 'Edit', edit_animal_path(animal), class: "btn btn-primary" %>
-            <%= link_to 'Destroy', animal, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
-          </td>
-        <% end %>
-      </tr>
+  <td>
+    <% if write_animals? %>
+      <%= link_to 'Show', animal, class: "btn btn-primary" %>
+      <%= link_to 'Destroy', animal, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
+    <% end %>
+  </td>
+</tr>

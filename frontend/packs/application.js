@@ -18,5 +18,8 @@ import "components/toy/toy";
 import "components/toy_types/toy_types";
 import "components/toy_type/toy_type";
 import Rails from "rails-ujs";
+import * as ActiveStorage from "activestorage";
+// import AWS from "aws-sdk";
 
+ActiveStorage.start();
 Rails.start();

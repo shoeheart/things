@@ -21,7 +21,13 @@
     %>
     <%= f.label :birth_date %>: <%= f.date_field :birth_date %>
     <%= f.label :is_vaccinated %>: <%= f.check_box :is_vaccinated %>
-    <%= f.label :image %>: <%= f.file_field :image, direct_upload: true %>
+    <%= f.label :images %>: <%=
+      f.file_field(
+        :images,
+        multiple: true,
+        direct_upload: true
+      )
+    %>
     <%= f.submit "Add Animal", data: { remote: true, disable: true, disable_with: "Adding..." } %>
   <% end %>
 <% end %>
@@ -33,6 +39,7 @@
       <th>Name</th>
       <th>Species</th>
       <th>Toy Count</th>
+      <th>Image</th>
       <% if write_animals? %>
       <th>Actions</th>
       <% end %>

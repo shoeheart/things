@@ -6,7 +6,7 @@ class Animal < ApplicationRecord
   belongs_to :species
   has_many :toys
 
-  has_one_attached :image
+  has_many_attached :images
 
   scope :not_adopted, -> {
     # note this could cause double join when used to get to Person

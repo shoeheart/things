@@ -3,52 +3,16 @@
 class AnimalsController < ApplicationController
   include Secured
 
-  before_action :set_animal, only: [:edit, :update, :destroy]
+  before_action :set_animal, only: [:update, :destroy]
 
   # GET /animals
-  # GET /animals.json
   def index
     @animals = animals_with_display_attributes
     @animal = Animal.new
     @species = Species.all.order(:name)
   end
 
-  def animals_with_display_attributes
-    Animal
-      .joins(:species)
-      .left_outer_joins(:toys)
-      .select("
-        animals.id,
-        animals.name,
-        animals.species_id,
-        animals.birth_date,
-        animals.is_vaccinated,
-        species.name as species_name,
-        count(toys.id) as toy_count
-      ")
-      .group("animals.id, animals.name, species.name")
-      .order("animals.name")
-  end
-
-  def animal_with_display_attributes(id)
-    Animal
-      .joins(:species)
-      .left_outer_joins(:toys)
-      .select("
-        animals.id,
-        animals.name,
-        animals.species_id,
-        animals.birth_date,
-        animals.is_vaccinated,
-        species.name as species_name,
-        count(toys.id) as toy_count
-      ")
-      .group("animals.id, animals.name, species.name")
-      .find(id)
-  end
-
   # GET /animals/1
-  # GET /animals/1.json
   def show
     @animal = animal_with_display_attributes(params[:id])
     @species = Species.all.order(:name)
@@ -64,14 +28,11 @@ class AnimalsController < ApplicationController
         .order("toys.acquired_on desc")
   end
 
-  # GET /animals/new
-  def new
-    @animal = Animal.new
-    @species = Species.all.order(:name)
-  end
-
   # POST /animals
-  # POST /animals.json
+  #
+  # currently only used from index page so
+  # redirects back there only as opposed
+  # some new/edit form
   def create
     @animal = Animal.new(animal_params)
 
@@ -83,10 +44,11 @@ class AnimalsController < ApplicationController
           redirect_to animals_path,
           notice: "Animal #{@animal.name} was successfully created."
         }
-        format.json { render :show, status: :created, location: @animal }
       else
-        format.html { render :new }
-        format.json { render json: @animal.errors, status: :unprocessable_entity }
+        format.html {
+          redirect_to animals_path,
+          notice: @animal.errors
+        }
       end
     end
   end
@@ -126,27 +88,27 @@ class AnimalsController < ApplicationController
   end
 
   # PATCH/PUT /animals/1
-  # PATCH/PUT /animals/1.json
   def update
     respond_to do |format|
-      if @animal.update(animal_params)
-        format.html { redirect_to @animal, notice: "Animal was successfully updated." }
-        format.json { render :show, status: :ok, location: @animal }
-      else
-        format.html { render :edit }
-        format.json { render json: @animal.errors, status: :unprocessable_entity }
-      end
+      format.html {
+        redirect_to @animal,
+        notice: (
+          @animal.update(animal_params) ?
+            "Animal was successfully updated." :
+            @animal.errors
+        )
+      }
     end
   end
 
   # DELETE /animals/1
-  # DELETE /animals/1.json
   def destroy
     @animal.destroy
     respond_to do |format|
-      format.html { redirect_to animals_url, notice: "Animal #{@animal.name} was successfully destroyed." }
-      format.js
-      format.json { head :no_content }
+      format.html {
+        redirect_to animals_url,
+        notice: "Animal #{@animal.name} was successfully destroyed."
+      }
     end
   end
 
@@ -163,7 +125,41 @@ class AnimalsController < ApplicationController
         :species_id,
         :birth_date,
         :is_vaccinated,
-        :image
+        images: []
       )
+    end
+
+    def animals_with_display_attributes
+      Animal
+        .joins(:species)
+        .left_outer_joins(:toys)
+        .select("
+          animals.id,
+          animals.name,
+          animals.species_id,
+          animals.birth_date,
+          animals.is_vaccinated,
+          species.name as species_name,
+          count(toys.id) as toy_count
+        ")
+        .group("animals.id, animals.name, species.name")
+        .order("animals.name")
+    end
+
+    def animal_with_display_attributes(id)
+      Animal
+        .joins(:species)
+        .left_outer_joins(:toys)
+        .select("
+          animals.id,
+          animals.name,
+          animals.species_id,
+          animals.birth_date,
+          animals.is_vaccinated,
+          species.name as species_name,
+          count(toys.id) as toy_count
+        ")
+        .group("animals.id, animals.name, species.name")
+        .find(id)
     end
 end
