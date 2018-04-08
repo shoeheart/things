@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Be sure to restart your server when you modify this file.
 
 # Add new inflection rules using the following format. Inflections
@@ -16,8 +14,3 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
-
-# see https://stackoverflow.com/questions/17994428/with-a-model-where-the-name-is-the-same-single-as-plural-has-many-through-i
-ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.uncountable %w( species )
-end

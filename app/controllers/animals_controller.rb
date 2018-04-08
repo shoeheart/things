@@ -6,17 +6,17 @@ class AnimalsController < ApplicationController
   before_action :set_animal, only: [:edit, :update, :destroy]
 
   # /ujs/animals_totals
-  def totals
-    @species_totals =
-      Animal
-        .joins(:species)
-        .group("species.name")
-        .order("species.name")
-        .count
+  # def totals
+    # @species_totals =
+      # Animal
+        # .joins(:species)
+        # .group("species.name")
+        # .order("species.name")
+        # .count
 
-    # allow controller to respond to Ajax request
-    # format.js
-  end
+    # # allow controller to respond to Ajax request
+    # # format.js
+  # end
 
   # GET /animals
   # GET /animals.json
@@ -34,6 +34,8 @@ class AnimalsController < ApplicationController
       .select("
         animals.id,
         animals.name,
+        birth_date,
+        is_vaccinated,
         species.name as species_name,
         count(toys.id) as toy_count
       ")
@@ -48,6 +50,8 @@ class AnimalsController < ApplicationController
       .select("
         animals.id,
         animals.name,
+        birth_date,
+        is_vaccinated,
         species.name as species_name,
         count(toys.id) as toy_count
       ")
@@ -60,6 +64,7 @@ class AnimalsController < ApplicationController
   def show
     # see https://code.tutsplus.com/articles/improving-the-performance-of-your-rails-app-with-eager-loading--cms-25018
     @animal = animal_with_display_attributes(params[:id])
+    @species = Species.all.order(:name)
     @toys =
       @animal.toys
         .joins(:toy_type)
@@ -90,7 +95,7 @@ class AnimalsController < ApplicationController
       if @animal.save!
         # re-read animal to add in the species and toy synthetic attributes
         @animal = animal_with_display_attributes(@animal.id)
-        format.html { redirect_to @animals, notice: "Animal was successfully created." }
+        format.html { redirect_to animals_path, notice: "Animal #{@animal.name} was successfully created." }
         # allow controller to respond to Ajax request
         format.js
         format.json { render :show, status: :created, location: @animal }

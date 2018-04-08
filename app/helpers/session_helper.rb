@@ -10,11 +10,16 @@ module SessionHelper
 
   PERMISSIONS_NAMESPACE = "https://codebarn.com/claims/permissions"
   def get_permissions
-    session[:userinfo][:extra][:raw_info][PERMISSIONS_NAMESPACE] if (
+    permissions = []
+    if (
       session[:userinfo] &&
-      session[:userinfo][:extra] &&
-      session[:userinfo][:extra][:raw_info]
+      session[:userinfo]["extra"] &&
+      session[:userinfo]["extra"]["raw_info"]
     )
+      permissions =
+        session[:userinfo]["extra"]["raw_info"][PERMISSIONS_NAMESPACE]
+    end
+    permissions
   end
 
   def write_animals?

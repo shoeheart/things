@@ -3,71 +3,13 @@
   <head>
     <title>Things</title>
     <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application' %>
   </head>
+
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/"><%= image_tag "barn-50x50.jpeg"%></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item <%= 'active' if params[:controller] == 'home' %>">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <% if session[:userinfo] %>
-              <li class="nav-item <%= 'active' if params[:controller] == 'posts' %>">
-                <a class="nav-link" href="<%= posts_path %>">Posts</a>
-              </li>
-            <% if read_animals? %>
-              <li class="nav-item <%= 'active' if params[:controller] == 'animals' %>">
-                <a class="nav-link" href="<%= animals_path %>">Animals</a>
-              </li>
-            <% end %>
-            <% if read_lookups? %>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Lookups
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="<%= species_index_path %>">Species</a>
-                </div>
-              </li>
-            <% end %>
-          <li class="nav-item <%= 'active' if params[:controller] == 'profile' %>">
-            <a class="nav-link" href="<%= profile_path %>"><%= session[:userinfo][:info][:name] %></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<%= logout_path %>">Logout</a>
-          </li>
-          <% end %>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
-      <%= yield %>
-    </div>
+    <%= yield %>
+    <%= javascript_pack_tag 'application' %>
   </body>
 </html>
-<%
-=begin
-%>
-
-crap for future use can be hidden here
-
-<%
-=end
-%>

@@ -1,8 +1,17 @@
-# frozen_string_literal: true
+require_relative 'boot'
 
-require_relative "boot"
-
-require "rails/all"
+require "rails"
+# Pick the frameworks you want:
+require "active_model/railtie"
+# require "active_job/railtie"
+require "active_record/railtie"
+require "active_storage/engine"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_view/railtie"
+require "action_cable/engine"
+# require "sprockets/railtie"
+# require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -11,19 +20,22 @@ Bundler.require(*Rails.groups)
 module Things
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.1
+    config.load_defaults 5.2
 
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
 
-    # Set this if you want to get the error_description
-    OmniAuth.config.on_failure = Proc.new { |env|
-      message_key = env["omniauth.error.type"]
-      error_description = Rack::Utils.escape(env["omniauth.error"].error_reason)
-      new_path = "#{env['SCRIPT_NAME']}#{OmniAuth.config.path_prefix}/failure?message=
-    => #{message_key}&error_description=#{error_description}"
-      Rack::Response.new(["302 Moved"], 302, "Location": new_path).finish
-    }
+    # Don't generate system test files.
+    config.generators.system_tests = nil
+
+    config.generators do |g|
+      g.test_framework false
+      g.stylesheets false
+      g.javascripts false
+      g.helper false
+      g.channel assets: false
+    end
   end
 end

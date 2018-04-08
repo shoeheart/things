@@ -1,7 +1,0 @@
-// See: https://medium.com/actualize-network/sending-post-requests-in-rails-5-1-without-jquery-ff89f6f80487
-
-// add newly added animal to end of current page list
-$("<%= escape_javascript( render @species ) %>").appendTo("#species");
-
-//debugger;
-
