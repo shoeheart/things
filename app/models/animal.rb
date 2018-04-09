@@ -8,6 +8,25 @@ class Animal < ApplicationRecord
 
   has_many_attached :images
 
+  # must use eigen class to pull class methods into symbol namespace
+  class << self
+    def hello_immediate
+      puts "Hello immediate from #{Animal.count} animals"
+    end
+    handle_asynchronously :hello_immediate, queue: "immediate"
+
+    def hello_interactive
+      puts "Hello interactive from #{Animal.count} animals"
+    end
+    handle_asynchronously :hello_interactive, queue: "interactive"
+
+    def hello_batch
+      puts "Hello batch (default) from #{Animal.count} animals"
+    end
+    handle_asynchronously :hello_batch
+  end
+
+
   scope :not_adopted, -> {
     # note this could cause double join when used to get to Person
     # even though you don't have associated person if this scope is true

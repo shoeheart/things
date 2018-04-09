@@ -1,0 +1,33 @@
+two tables:
+active_storage_attachements
+active_storage_blobs
+
+two models:
+ActiveStorage::Attachment
+  id: 1
+  name: "images"
+  record_type: "Animal"
+  record_id: 1
+  blob_id: 1
+  created_at: "2018-04-08 21:31:15.208574"
+ActiveStorage::Blob
+  id: 1
+  key: "iE7jtRB97du31aK5oTXF5x9U"
+  filename: "34524885411_0c8550dd62_m.jpg"
+  content_type: "image/jpeg"
+  metadata: "{"width":240,"height":160,"analyzed":true}"
+  byte_size: "10254"
+  checksum: "OhOar5tzXEIxnXyXokPk/g=="
+  created_at: "2018-04-08 21:31:14.298962"
+
+s3:
+top level folder contains one file per blob
+and a variants folder with one folder per blob that contains generated variants
+top level folder: 
+  name: "iE7jtRB97du31aK5oTXF5x9U"
+variants/iE7jtRB97du31aK5oTXF5x9 folder:
+  name: "43f723bdca26ecbad7743e1798709dce7d9e6b104a8636007a89aa7bcebcd05d"
+
+https://s3.us-east-2.amazonaws.com/com.codebarn.things.activestorage/variants/iE7jtRB97du31aK5oTXF5x9U/43f723bdca26ecbad7743e1798709dce7d9e6b104a8636007a89aa7bcebcd05d?response-content-disposition=inline%3B%20filename%3D%2234524885411_0c8550dd62_m.jpg%22%3B%20filename%2A%3DUTF-8%27%2734524885411_0c8550dd62_m.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=1N5NZZZBYTT76YK2CJ82%2F20180408%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20180408T215551Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=ed4041acb2dd25f16640ba2f49cdd0e437b8fe6516d1912baabbf6dd413f0768 
+
+

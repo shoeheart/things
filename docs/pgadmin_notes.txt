@@ -1,0 +1,34 @@
+sudo vi /etc/hosts
+10.200.10.1 local_postgres
+(doesn't seem to work in pgadmin docker for name resolution)
+
+add to .bashrc:
+alias pgadmin="sudo docker run -p 5050:5050 -d fenglc/pgadmin4"
+
+add binding to non-changing address to loopback interface on ubuntu:
+sudo ifconfig lo add 10.200.10.1
+(will have to re-execute after reboots)
+
+sudo vi /etc/postgresql/10/main/pg_hba.conf
+add line:
+host    all             all             172.17.0.2/24          trust
+
+restart postgres:
+sudo /etc/init.d/postgresql restart
+
+change postgres password:
+/workspace/things % sudo -u postgres psql postgres
+psql (10.1)
+Type "help" for help.
+
+postgres=# \password postgres
+Enter new password: 
+Enter it again: 
+
+run pgadmin via alias:
+pgadmin
+open web browser to http://localhost:5050
+login via default pgadmin4@pgadmin.org password admin
+create server localhost for address 10.200.10.1
+user postgres password jason1
+

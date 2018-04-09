@@ -16,7 +16,7 @@ toy_types.each { | toy_type |
   ToyType.create(name: toy_type)
 }
 toy_types = ToyType.all.to_a
-50.times {
+20.times {
   a =
     Animal.create(
       name: Faker::Name.first_name,
@@ -31,7 +31,7 @@ toy_types = ToyType.all.to_a
     )
   }
 }
-20.times { |i|
+5.times { |i|
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
   p = Person.create(

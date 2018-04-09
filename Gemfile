@@ -7,6 +7,8 @@ ruby "2.5.0"
 
 gem "omniauth-auth0"
 gem "aws-sdk-s3"
+gem "delayed_job_active_record"# , "~> 4.1.4"
+gem "daemons"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
 gem "rails", "~> 5.2.0.rc2"

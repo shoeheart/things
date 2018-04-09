@@ -1,0 +1,27 @@
+config/initialiers/delayed_job.rb has default settings
+
+spring stop was necessary before .delay method could be found
+
+bundle exec rails install delayed_job generates bin/delayed_job
+
+tmp/pids holds pid files for runners but otherwise overmind and foreman exit
+
+bin/delayed_job status
+doesn't show anything running unless you match Procfile syntax exactly like:
+bin/delayed_job status -n 2 --queue=batch
+
+keep getting "already a process running" error when using -n 2
+
+issue is that the base name is delayed_job.n when you do -n 2
+and it doesn't differ based on the queues you launch.
+Can't specify identifier and count at same time so best
+we can do is add one line in Procfile for every instance we want
+
+/workspace/things % foreman s
+22:04:28 batch.1 | started with pid 3519
+22:04:31 batch.1 | /home/nimda/.rbenv/versions/2.5.0/lib/ruby/gems/2.5.0/gems/delayed_job-4.1.4/lib/delayed/command.rb:96:in `daemonize': Cannot specify both --number-of-workers and --identifier (ArgumentError)
+22:04:31 batch.1 |  from bin/delayed_job:6:in `<main>'
+22:04:31 batch.1 | launching ["start", "-n", "2", "--queue=batch", "--identifier=batch"]
+22:04:32 batch.1 | exited with code 1
+22:04:32 system  | sending SIGTERM to all processes
+
