@@ -7,6 +7,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+current_user_email = "sysadmin@codebarn.com"
+
+Logidze.with_responsible(current_user_email) do
+
 20.times {
   Species.create(name: Faker::Ancient.unique.primordial)
 }
@@ -54,3 +59,4 @@ toy_types = ToyType.all.to_a
     }
   end
 }
+end
