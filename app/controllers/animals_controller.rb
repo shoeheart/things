@@ -5,6 +5,19 @@ class AnimalsController < ApplicationController
 
   before_action :set_animal, only: [:update, :destroy]
 
+  # TODO: Move to right helper spot
+  def current_user_email
+    email = nil
+    if (
+      session[:userinfo] &&
+      session[:userinfo]["info"] &&
+      session[:userinfo]["info"]["email"]
+    )
+      email = session[:userinfo]["info"]["email"]
+    end
+    email
+  end
+
   # GET /animals
   def index
     @animals = animals_with_display_attributes
@@ -36,19 +49,21 @@ class AnimalsController < ApplicationController
   def create
     @animal = Animal.new(animal_params)
 
-    respond_to do |format|
-      if @animal.save!
-        # re-read animal to add in the species and toy synthetic attributes
-        @animal = animal_with_display_attributes(@animal.id)
-        format.html {
-          redirect_to animals_path,
-          notice: "Animal #{@animal.name} was successfully created."
-        }
-      else
-        format.html {
-          redirect_to animals_path,
-          notice: @animal.errors
-        }
+    Logidze.with_responsible(current_user_email) do
+      respond_to do |format|
+        if @animal.save!
+          # re-read animal to add in the species and toy synthetic attributes
+          @animal = animal_with_display_attributes(@animal.id)
+          format.html {
+            redirect_to animals_path,
+            notice: "Animal #{@animal.name} was successfully created."
+          }
+        else
+          format.html {
+            redirect_to animals_path,
+            notice: @animal.errors
+          }
+        end
       end
     end
   end
@@ -62,22 +77,26 @@ class AnimalsController < ApplicationController
         acquired_on: params[:acquired_on]
       )
 
-    respond_to do |format|
-      format.html {
-        redirect_to animal_path(params[:id]),
-        notice: (
-          @toy.save ?
-            "Toy was successfully added." :
-            @toy.errors
-        )
-      }
+    Logidze.with_responsible(current_user_email) do
+      respond_to do |format|
+        format.html {
+          redirect_to animal_path(params[:id]),
+          notice: (
+            @toy.save ?
+              "Toy was successfully added." :
+              @toy.errors
+          )
+        }
+      end
     end
   end
 
   # DELETE /animals/:id/delete_toy/:toy_id
   def delete_toy
     @toy = Toy.find(params[:toy_id])
-    @toy.delete
+    Logidze.with_responsible(current_user_email) do
+      @toy.delete
+    end
 
     respond_to do |format|
       format.html {
@@ -89,15 +108,17 @@ class AnimalsController < ApplicationController
 
   # PATCH/PUT /animals/1
   def update
-    respond_to do |format|
-      format.html {
-        redirect_to @animal,
-        notice: (
-          @animal.update(animal_params) ?
-            "Animal was successfully updated." :
-            @animal.errors
-        )
-      }
+    Logidze.with_responsible(current_user_email) do
+      respond_to do |format|
+        format.html {
+          redirect_to @animal,
+          notice: (
+            @animal.update(animal_params) ?
+              "Animal was successfully updated." :
+              @animal.errors
+          )
+        }
+      end
     end
   end
 

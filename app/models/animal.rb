@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Animal < ApplicationRecord
+  has_logidze
   has_one :pet_ownership
   has_one :person, through: :pet_ownership
   belongs_to :species

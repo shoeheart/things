@@ -8,6 +8,18 @@ module SessionHelper
     state
   end
 
+  def current_user_email
+    email = nil
+    if (
+      session[:userinfo] &&
+      session[:userinfo]["info"] &&
+      session[:userinfo]["info"]["email"]
+    )
+      email = session[:userinfo]["info"]["email"]
+    end
+    email
+  end
+
   PERMISSIONS_NAMESPACE = "https://codebarn.com/claims/permissions"
   def get_permissions
     permissions = []
