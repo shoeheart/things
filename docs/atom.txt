@@ -1,0 +1,12 @@
+apm install teletype
+apm install busy-signal
+apm install dash
+apm install ex-mode
+apm install formatter
+apm install formatter-json
+apm install intentions
+apm install linter
+apm install linter-erb
+apm install linter-rubocop
+apm install linter-ui-default
+apm install vim-mode-plus
