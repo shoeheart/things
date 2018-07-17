@@ -1,0 +1,74 @@
+ultimately just did what it suggested changing:
+environments/development.rb to check_yarn_integrity = false
+
+see https://github.com/rails/webpacker/issues/1374
+
+was seeing about running webpacker compiler but get error like:
+[4/4] 📃  Building fresh packages...
+✨  Done in 4.28s.
+Webpacker is installed 🎉 🍰
+Using /workspace/things/config/webpacker.yml file for setting up webpack paths
+
+
+========================================
+  Your Yarn packages are out of date!
+  Please run `yarn install` to update.
+========================================
+
+
+To disable this check, please add `config.webpacker.check_yarn_integrity = false`
+to your Rails development config file (config/environments/development.rb).
+
+
+yarn check v1.7.0
+warning Integrity check: Flags don't match
+error Integrity check failed
+error Found 1 errors.
+info Visit https://yarnpkg.com/en/docs/cli/check for documentation about this command.
+
+
+but attempts to add NODE_DEV=development to .env and prepended to command
+line still make certain commands fail including just:
+
+NODE_DEV=
+NODE_ENV=development rails webpacker:compile
+
+NODE_ENV=development rails webpacker:compile
+NODE_ENV=development rails webpacker:compile
+
+but
+rails webpacker:compile would fail with "integrity check"
+which appears to be related to :0
+
+
+/workspace/things % rails assets:precompile
+yarn install v1.7.0
+[1/4] 🔍  Resolving packages...
+[2/4] 🚚  Fetching packages...
+[3/4] 🔗  Linking dependencies...
+warning "@rails/webpacker > postcss-cssnext@3.1.0" has unmet peer dependency "caniuse-lite@^1.0.30000697".
+warning " > eslint-import-resolver-webpack@0.8.4" has unmet peer dependency "webpack@>=1.11.0".
+warning " > webpack-dev-server@2.11.2" has unmet peer dependency "webpack@^2.2.0 || ^3.0.0".
+warning "webpack-dev-server > webpack-dev-middleware@1.12.2" has unmet peer dependency "webpack@^1.0.0 || ^2.0.0 || ^3.0.0".
+[4/4] 📃  Building fresh packages...
+✨  Done in 4.28s.
+Webpacker is installed 🎉 🍰
+Using /workspace/things/config/webpacker.yml file for setting up webpack paths
+
+
+========================================
+  Your Yarn packages are out of date!
+  Please run `yarn install` to update.
+========================================
+
+
+To disable this check, please add `config.webpacker.check_yarn_integrity = false`
+to your Rails development config file (config/environments/development.rb).
+
+
+yarn check v1.7.0
+warning Integrity check: Flags don't match
+error Integrity check failed
+error Found 1 errors.
+info Visit https://yarnpkg.com/en/docs/cli/check for documentation about this command.
+

@@ -1,3 +1,5 @@
+gem install rubocop
+
 apm install teletype
 apm install busy-signal
 apm install dash
@@ -10,3 +12,5 @@ apm install linter-erb
 apm install linter-rubocop
 apm install linter-ui-default
 apm install vim-mode-plus
+
+
