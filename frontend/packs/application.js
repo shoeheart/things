@@ -21,6 +21,7 @@ import "components/jason/Jason.jsx";
 
 import Rails from "rails-ujs";
 import * as ActiveStorage from "activestorage";
+
 // import AWS from "aws-sdk";
 
 // By default, this pack is loaded for server-side rendering.
