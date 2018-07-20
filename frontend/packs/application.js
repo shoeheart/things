@@ -17,9 +17,19 @@ import "components/toys/toys";
 import "components/toy/toy";
 import "components/toy_types/toy_types";
 import "components/toy_type/toy_type";
+import "components/jason/Jason.jsx";
+
 import Rails from "rails-ujs";
 import * as ActiveStorage from "activestorage";
 // import AWS from "aws-sdk";
+
+// By default, this pack is loaded for server-side rendering.
+// It must expose react_ujs as `ReactRailsUJS` and prepare a require context.
+// Support component names relative to this directory:
+const componentRequireContext = require.context("components", true);
+const ReactRailsUJS = require("react_ujs");
+
+ReactRailsUJS.useContext(componentRequireContext);
 
 ActiveStorage.start();
 Rails.start();
