@@ -3,16 +3,6 @@ import NumberList from "./NumberList.jsx";
 import NameForm from "./NameForm.jsx";
 import FlavorForm from "./FlavorForm.jsx";
 
-// stateless functional components
-// takes in properties and renders something
-// purely an output of input
-// const Jason = props => (
-//   <div>Jason {props.greeting}!</div>
-// );
-
-// std def for react compoment
-// this.props contains the properties passed to component invocation
-// this.state is predfined name for where to store component state
 class Jason extends React.Component {
   constructor(props) {
     super(props);

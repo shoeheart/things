@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root "home#index"
   get "/" => "home#index"
 
+  get "/animals/react" => "animals#react_index"
   resources :animals, except: [:edit, :new]
   resources :species
   delete "/animals/:id/delete_toy/:toy_id(.:format)" => "animals#delete_toy", as: :animal_delete_toy

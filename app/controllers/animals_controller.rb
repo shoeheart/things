@@ -25,6 +25,12 @@ class AnimalsController < ApplicationController
     @species = Species.all.order(:name)
   end
 
+  def react_index
+    @animals = animals_with_display_attributes
+    @animal = Animal.new
+    @species = Species.all.order(:name)
+  end
+
   # GET /animals/1
   def show
     @animal = animal_with_display_attributes(params[:id])

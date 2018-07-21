@@ -17,7 +17,8 @@
     "rails-ujs": "^5.1.6",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react_ujs": "^2.4.4"
+    "react_ujs": "^2.4.4",
+    "reactstrap": "^6.3.0"
   },
   "scripts": {
     "lint-staged": "$(yarn bin)/lint-staged"
