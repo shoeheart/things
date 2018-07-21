@@ -7,4 +7,8 @@ module ApplicationHelper
   end
 
   alias c component
+
+  def rc(component_path, arguments)
+    react_component(component_path, arguments)
+  end
 end

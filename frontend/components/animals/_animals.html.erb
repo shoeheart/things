@@ -9,7 +9,8 @@
       model: @animal,
       local: true,
       html: { id: 'add_animal_form' }
-    ) do |f| %>
+    ) do |f|
+  %>
     <%= f.label :name %>: <%= f.text_field :name %>
     <%= f.label :species_id, "Species" %>: <%=
       f.collection_select(
