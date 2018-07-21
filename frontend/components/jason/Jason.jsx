@@ -1,6 +1,7 @@
 import React from "react";
 import NumberList from "./NumberList.jsx";
 import NameForm from "./NameForm.jsx";
+import FlavorForm from "./FlavorForm.jsx";
 
 // stateless functional components
 // takes in properties and renders something
@@ -68,6 +69,7 @@ class Jason extends React.Component {
           <span>It is {this.state.date.toLocaleTimeString()}.</span>
         </div>
         <NameForm />
+        <FlavorForm />
       </div>
     );
   }
