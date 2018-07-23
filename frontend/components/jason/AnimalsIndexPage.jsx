@@ -2,8 +2,8 @@ import React from "react";
 import Menu from "components/jason/Menu.jsx";
 import Animals from "components/jason/Animals.jsx";
 
-class AnimalsPage extends React.Component {
-  /* eslint class-methods-use-this: "off" */
+class AnimalsIndexPage extends React.Component {
+  /* eslint class-methods-use-this: "error" */
   render() {
     return (
       <div>
@@ -14,4 +14,4 @@ class AnimalsPage extends React.Component {
   }
 }
 
-export default AnimalsPage;
+export default AnimalsIndexPage;

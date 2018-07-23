@@ -17,7 +17,7 @@ class Animals extends React.Component {
         <tbody>
           {this.props.animals.map(animal => (
             <Animal key={animal.id} animal={animal} />
-          ))};
+          ))}
         </tbody>
       </Table>
     );

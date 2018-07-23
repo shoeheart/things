@@ -31,6 +31,30 @@ class AnimalsController < ApplicationController
     @species = Species.all.order(:name)
   end
 
+  def react_create
+    @animal = Animal.new(animal_params)
+    Logidze.with_responsible(current_user_email) do
+      respond_to do |format|
+        if @animal.save!
+          format.html {
+            redirect_to animals_react_path,
+            notice: "Animal #{@animal.name} was successfully created."
+          }
+        else
+          format.html {
+            redirect_to animals_path,
+            notice: @animal.errors
+          }
+        end
+      end
+    end
+  end
+
+  def react_new
+    @animal = Animal.new
+    @species = Species.all.order(:name)
+  end
+
   # GET /animals/1
   def show
     @animal = animal_with_display_attributes(params[:id])
