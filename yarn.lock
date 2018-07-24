@@ -434,8 +434,8 @@ autoprefixer@^7.1.1, autoprefixer@^7.1.2:
     postcss-value-parser "^3.2.3"
 
 aws-sdk@^2.222.1:
-  version "2.275.1"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.275.1.tgz#a5dce9695a705d66a3fa822f4c23d810be90569a"
+  version "2.279.1"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.279.1.tgz#3a4fd4167932e4361dbdcfcb174ce4840ffcbf20"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -1380,8 +1380,8 @@ caniuse-api@^2.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000867"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000867.tgz#b55a6ecfac3107988940c9c7dfe1866315312c97"
+  version "1.0.30000870"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000870.tgz#f397cd64922c24f85d0ce7803c9bd5c5a1571b16"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30000844:
   version "1.0.30000865"
@@ -2724,8 +2724,8 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     is-extendable "^1.0.1"
 
 extend@^3.0.0, extend@~3.0.0, extend@~3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
 
 external-editor@^2.0.4:
   version "2.2.0"
@@ -3966,8 +3966,8 @@ jquery@^3.3.1:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.8, js-base64@^2.1.9:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.6.tgz#1d49f618bef43630cd191f4e122447acfdb947d8"
+  version "2.4.8"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.8.tgz#57a9b130888f956834aa40c5b165ba59c758f033"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -4552,19 +4552,15 @@ miller-rabin@^4.0.0:
     bn.js "^4.0.0"
     brorand "^1.0.1"
 
-"mime-db@>= 1.34.0 < 2":
+"mime-db@>= 1.34.0 < 2", mime-db@~1.35.0:
   version "1.35.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.35.0.tgz#0569d657466491283709663ad379a99b90d9ab47"
 
-mime-db@~1.33.0:
-  version "1.33.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.33.0.tgz#a3492050a5cb9b63450541e39d9788d2272783db"
-
 mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.18, mime-types@~2.1.7:
-  version "2.1.18"
-  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.18.tgz#6f323f60a83d11146f831ff11fd66e2fe5503bb8"
+  version "2.1.19"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.19.tgz#71e464537a7ef81c15f2db9d97e913fc0ff606f0"
   dependencies:
-    mime-db "~1.33.0"
+    mime-db "~1.35.0"
 
 mime@1.4.1:
   version "1.4.1"
@@ -7528,7 +7524,7 @@ unist-util-find-all-after@^1.0.1:
   dependencies:
     unist-util-is "^2.0.0"
 
-unist-util-is@^2.0.0, unist-util-is@^2.1.1:
+unist-util-is@^2.0.0, unist-util-is@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/unist-util-is/-/unist-util-is-2.1.2.tgz#1193fa8f2bfbbb82150633f3a8d2eb9a1c1d55db"
 
@@ -7548,11 +7544,17 @@ unist-util-stringify-position@^1.0.0, unist-util-stringify-position@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/unist-util-stringify-position/-/unist-util-stringify-position-1.1.2.tgz#3f37fcf351279dcbca7480ab5889bb8a832ee1c6"
 
-unist-util-visit@^1.1.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-1.3.1.tgz#c019ac9337a62486be58531bc27e7499ae7d55c7"
+unist-util-visit-parents@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/unist-util-visit-parents/-/unist-util-visit-parents-2.0.0.tgz#9d4f6354e2944ce9176e953f646b884998738cd3"
   dependencies:
-    unist-util-is "^2.1.1"
+    unist-util-is "^2.1.2"
+
+unist-util-visit@^1.1.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-1.4.0.tgz#1cb763647186dc26f5e1df5db6bd1e48b3cc2fb1"
+  dependencies:
+    unist-util-visit-parents "^2.0.0"
 
 units-css@^0.4.0:
   version "0.4.0"

@@ -13,7 +13,7 @@ class FlavorForm extends React.Component {
   };
 
   handleSubmit = event => {
-    alert(`Favorite flavor submitted as: ${this.state.value}`);
+    // alert(`Favorite flavor submitted as: ${this.state.value}`);
     event.preventDefault();
   };
 
