@@ -50,6 +50,31 @@ class AnimalsController < ApplicationController
     end
   end
 
+  def react_create_json
+    @animal = Animal.new(animal_params)
+    Logidze.with_responsible(current_user_email) do
+      if @animal.save!
+        render json: {
+          animal: @animal,
+          redirect_to: animals_path
+        }
+        # redirect_to(
+          # animals_react_path,
+          # notice: "Animal #{@animal.name} was successfully created."
+        # )
+      else
+        render json: {
+          animal: @animal,
+          note: @animal.errors
+        }
+        #redirect_to(
+          #animals_path,
+          #notice: @animal.errors
+        #)
+      end
+    end
+  end
+
   def react_new
     @animal = Animal.new
     @species = Species.all.order(:name)

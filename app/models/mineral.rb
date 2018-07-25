@@ -1,0 +1,2 @@
+class Mineral < ApplicationRecord
+end

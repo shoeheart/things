@@ -1,5 +1,7 @@
 import React from "react";
 
+const axios = require("axios");
+
 class AnimalForm extends React.Component {
   constructor(props) {
     super(props);
@@ -20,9 +22,37 @@ class AnimalForm extends React.Component {
     });
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    axios
+      .post("/animals/react_create_json", {
+        authenticity_token: this.props.authenticity_token,
+        animal: {
+          name: this.state["animal[name]"],
+          birth_date: this.state["animal[birth_date]"],
+          is_vaccinated: this.state["animal[is_vaccinated]"],
+          species_id: this.state["animal[species_id]"]
+        }
+      })
+      .then(response => {
+        // console.log( "axios success:" );
+        // console.log( response );
+        window.location.href = response.data.redirect_to;
+      })
+      .catch(() => {
+        // console.log( "axios error:" );
+        // console.log( response );
+        // TODO: handle error here
+      });
+  };
+
   render() {
     return (
-      <form method="POST" action="/animals/react_create">
+      <form
+        method="POST"
+        action="/animals/react_create"
+        onSubmit={this.handleSubmit}
+      >
         <input
           type="hidden"
           name="authenticity_token"

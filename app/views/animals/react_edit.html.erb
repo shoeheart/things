@@ -1,0 +1,11 @@
+<%=
+  react_component(
+    "jason/AnimalsEditPage",
+    {
+      animal: @animal,
+      species: @species,
+      authenticity_token: session[:_csrf_token]
+    },
+    prerender: true
+  )
+%>

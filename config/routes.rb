@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :minerals
   root "home#index"
   get "/" => "home#index"
 
   get "/animals/react" => "animals#react_index"
   get "/animals/react_new" => "animals#react_new"
+  get "/animals/react_edit" => "animals#react_edit"
   post "/animals/react_create" => "animals#react_create"
+  post "/animals/react_create_json" => "animals#react_create_json"
   resources :animals, except: [:edit, :new]
   resources :species
   delete "/animals/:id/delete_toy/:toy_id(.:format)" => "animals#delete_toy", as: :animal_delete_toy
