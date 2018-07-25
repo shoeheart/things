@@ -2,7 +2,7 @@ import React from "react";
 import Menu from "components/jason/Menu.jsx";
 import AnimalForm from "components/jason/AnimalForm.jsx";
 
-class AnimalsNewPage extends React.Component {
+class AnimalsShowPage extends React.Component {
   /* eslint class-methods-use-this: "error" */
   render() {
     return (
@@ -18,4 +18,4 @@ class AnimalsNewPage extends React.Component {
   }
 }
 
-export default AnimalsNewPage;
+export default AnimalsShowPage;

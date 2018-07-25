@@ -3,7 +3,7 @@
 class AnimalsController < ApplicationController
   include Secured
 
-  before_action :set_animal, only: [:update, :destroy]
+  before_action :set_animal, only: [:react_update_json, :update, :destroy]
 
   # TODO: Move to right helper spot
   def current_user_email
@@ -58,25 +58,22 @@ class AnimalsController < ApplicationController
           animal: @animal,
           redirect_to: animals_path
         }
-        # redirect_to(
-          # animals_react_path,
-          # notice: "Animal #{@animal.name} was successfully created."
-        # )
       else
         render json: {
           animal: @animal,
           note: @animal.errors
         }
-        #redirect_to(
-          #animals_path,
-          #notice: @animal.errors
-        #)
       end
     end
   end
 
   def react_new
     @animal = Animal.new
+    @species = Species.all.order(:name)
+  end
+
+  def react_edit
+    @animal = Animal.find(params[:id])
     @species = Species.all.order(:name)
   end
 
@@ -176,6 +173,24 @@ class AnimalsController < ApplicationController
       end
     end
   end
+
+  # PATCH/PUT /animals/1
+  def react_update_json
+    Logidze.with_responsible(current_user_email) do
+      if @animal.update(animal_params)
+        render json: {
+          animal: @animal,
+          redirect_to: animals_path
+        }
+      else
+        render json: {
+          animal: @animal,
+          note: @animal.errors
+        }
+      end
+    end
+  end
+
 
   # DELETE /animals/1
   def destroy

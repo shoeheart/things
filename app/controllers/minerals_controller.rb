@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MineralsController < ApplicationController
   before_action :set_mineral, only: [:show, :edit, :update, :destroy]
 
@@ -28,7 +30,7 @@ class MineralsController < ApplicationController
 
     respond_to do |format|
       if @mineral.save
-        format.html { redirect_to @mineral, notice: 'Mineral was successfully created.' }
+        format.html { redirect_to @mineral, notice: "Mineral was successfully created." }
         format.json { render :show, status: :created, location: @mineral }
       else
         format.html { render :new }
@@ -42,7 +44,7 @@ class MineralsController < ApplicationController
   def update
     respond_to do |format|
       if @mineral.update(mineral_params)
-        format.html { redirect_to @mineral, notice: 'Mineral was successfully updated.' }
+        format.html { redirect_to @mineral, notice: "Mineral was successfully updated." }
         format.json { render :show, status: :ok, location: @mineral }
       else
         format.html { render :edit }
@@ -56,7 +58,7 @@ class MineralsController < ApplicationController
   def destroy
     @mineral.destroy
     respond_to do |format|
-      format.html { redirect_to minerals_url, notice: 'Mineral was successfully destroyed.' }
+      format.html { redirect_to minerals_url, notice: "Mineral was successfully destroyed." }
       format.json { head :no_content }
     end
   end
