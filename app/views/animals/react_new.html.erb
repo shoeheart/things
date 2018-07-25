@@ -1,7 +1,11 @@
 <%=
-  rc(
+  react_component(
     "jason/AnimalsNewPage",
-    animal: @animal,
-    species: @species
+    {
+      animal: @animal,
+      species: @species,
+      authenticity_token: session[:_csrf_token]
+    },
+    prerender: true
   )
 %>
