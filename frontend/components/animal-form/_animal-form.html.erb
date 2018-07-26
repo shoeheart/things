@@ -28,6 +28,7 @@
   %><br/>
   <% animal.images.each do |image| %>
     <%= image_tag(image.variant(resize: "50x50")) %>
+    <%= image_tag(image.variant(resize: "100x100")) %>
   <% end %>
   <%=
     f.submit(

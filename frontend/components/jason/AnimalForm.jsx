@@ -103,6 +103,16 @@ class AnimalForm extends React.Component {
             ))}
           </select>
         </label>
+        <label>
+          Images:
+          <input
+            multiple="multiple"
+            data-direct-upload-url="/rails/active_storage/direct_uploads"
+            type="file"
+            name="animal[images][]"
+            id="animal_images"
+          />
+        </label>
         <input type="submit" value="Submit" />
       </form>
     );

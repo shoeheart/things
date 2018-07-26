@@ -12,7 +12,7 @@ current_user_email = "sysadmin@codebarn.com"
 
 Logidze.with_responsible(current_user_email) do
 
-20.times {
+10.times {
   Species.create(name: Faker::Ancient.unique.primordial)
 }
 species = Species.all.to_a
@@ -21,7 +21,7 @@ toy_types.each { | toy_type |
   ToyType.create(name: toy_type)
 }
 toy_types = ToyType.all.to_a
-20.times {
+5.times {
   a =
     Animal.create(
       name: Faker::Name.first_name,
@@ -36,7 +36,7 @@ toy_types = ToyType.all.to_a
     )
   }
 }
-5.times { |i|
+3.times { |i|
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
   p = Person.create(

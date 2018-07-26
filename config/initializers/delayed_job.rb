@@ -9,7 +9,8 @@ Delayed::Worker.default_queue_name = "batch"
 Delayed::Worker.delay_jobs = !Rails.env.test?
 # Delayed::Worker.raise_signal_exceptions = :term
 # Delayed::Worker.raise_signal_exceptions = false
-Delayed::Worker.logger = Logger.new(File.join(Rails.root, "log", "delayed_job.log"))
+Delayed::Worker.logger =
+  Logger.new(File.join(Rails.root, "log", "delayed_job.log"))
 Delayed::Worker.queue_attributes = {
   batch: { priority: 10 },
   interactive: { priority: 5 },
