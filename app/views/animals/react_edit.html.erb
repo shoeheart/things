@@ -4,7 +4,8 @@
     {
       animal: @animal,
       species: @species,
-      authenticity_token: session[:_csrf_token]
+      authenticity_token: session[:_csrf_token],
+      versions: Util::AuditTrail.to_hash(logidze_versions: @animal.log_data.versions)
     },
     prerender: true
   )

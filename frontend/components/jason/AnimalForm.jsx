@@ -6,11 +6,11 @@ class AnimalForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      "animal[id]": props.animal.id,
-      "animal[name]": props.animal.name,
-      "animal[birth_date]": props.animal.birth_date,
+      "animal[id]": props.animal.id || "",
+      "animal[name]": props.animal.name || "",
+      "animal[birth_date]": props.animal.birth_date || "",
       "animal[is_vaccinated]": props.animal.is_vaccinated ? 1 : 0,
-      "animal[species_id]": props.animal.species_id
+      "animal[species_id]": props.animal.species_id || ""
     };
   }
 
