@@ -36,6 +36,10 @@ gem "mini_magick"# , "~> 4.8"
 # Reduces boot times through caching; required in config/boot.rb
 # gem "bootsnap", ">= 1.1.0", require: false
 
+
+# use in prod too for now
+gem "faker"
+
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
@@ -44,7 +48,6 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot"
   gem "factory_bot_rails"
-  gem "faker"
   gem "dotenv"
 end
 
