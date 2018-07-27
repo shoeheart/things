@@ -194,13 +194,15 @@ class AnimalsController < ApplicationController
 
   # DELETE /animals/1
   def destroy
-    @animal.destroy
-    respond_to do |format|
-      format.html {
-        redirect_to animals_url,
-        notice: "Animal #{@animal.name} was successfully destroyed."
-      }
-    end
+    Logidze.with_responsible(current_user_email) {
+      @animal.destroy
+      respond_to do |format|
+        format.html {
+          redirect_to animals_url,
+          notice: "Animal #{@animal.name} was successfully destroyed."
+        }
+      end
+    }
   end
 
   private

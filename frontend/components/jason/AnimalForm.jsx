@@ -106,7 +106,7 @@ class AnimalForm extends React.Component {
         <label>
           Images:
           <input
-            multiple="multiple"
+            multiple="true"
             data-direct-upload-url="/rails/active_storage/direct_uploads"
             type="file"
             name="animal[images][]"

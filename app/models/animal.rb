@@ -5,7 +5,7 @@ class Animal < ApplicationRecord
   has_one :pet_ownership
   has_one :person, through: :pet_ownership
   belongs_to :species
-  has_many :toys
+  has_many :toys, dependent: :destroy
 
   has_many_attached :images
 

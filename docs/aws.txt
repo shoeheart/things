@@ -1,0 +1,7 @@
+moved all codebarn.* domains to aws
+moved dns for codebarn.* domains to aws
+generated free *.codebarn.* ssl certs
+created free tier postgresql 10.4 rds instance
+created free tier ec2 ami linux 2 instance
+configured billing.codebarn.com s3 bucket for billing, and billing alerts
+created rds_ssh.sh to tunnel to private rds via ec2 so can connect pgadmin

@@ -29,19 +29,20 @@ development:
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
-  #username: things
+  # username: <%= Rails.application.credentials.dig(:aws, :rds_username) %>
 
   # The password associated with the postgres role (username).
-  #password:
+  # password: <%= Rails.application.credentials.dig(:aws, :rds_password) %>
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
-  #host: localhost
+  # host: localhost # must be used when using rds_ssh.sh tunnel to rds
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
-  port: 5433
+  port: 5433 # nonstandard port for local native postgres 10 on new macbook
+  # port: 9432 # must be running rds_ssh.sh tunnel to rds to use
 
   # Schema search path. The server defaults to $user,public
   #schema_search_path: myapp,sharedapp,public
