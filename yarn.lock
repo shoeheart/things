@@ -434,8 +434,8 @@ autoprefixer@^7.1.1, autoprefixer@^7.1.2:
     postcss-value-parser "^3.2.3"
 
 aws-sdk@^2.222.1:
-  version "2.280.1"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.280.1.tgz#73a152ef68456c66d303b0938cb64479ee02de5b"
+  version "2.282.1"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.282.1.tgz#3e425b76c9a98d3374c8d70660f83619f66c92fd"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -3608,9 +3608,9 @@ ip@^1.1.0, ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
 
-ipaddr.js@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.6.0.tgz#e3fa357b773da619f26e95f049d055c72796f86b"
+ipaddr.js@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.8.0.tgz#eaa33d6ddd7ace8f7f6fe0c9ca0440e706738b1e"
 
 is-absolute-url@^2.0.0:
   version "2.1.0"
@@ -5943,11 +5943,11 @@ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1,
     object-assign "^4.1.1"
 
 proxy-addr@~2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.3.tgz#355f262505a621646b3130a728eb647e22055341"
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.4.tgz#ecfc733bf22ff8c6f407fa275327b9ab67e48b93"
   dependencies:
     forwarded "~0.1.2"
-    ipaddr.js "1.6.0"
+    ipaddr.js "1.8.0"
 
 prr@~1.0.1:
   version "1.0.1"
@@ -6142,8 +6142,8 @@ react_ujs@^2.4.4:
   resolved "https://registry.yarnpkg.com/react_ujs/-/react_ujs-2.4.4.tgz#49bac535d24024a96b0a35d7514d18188aea42bc"
 
 reactstrap@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-6.3.0.tgz#99c790f7293dc74e01b5907d62db675b63866e9c"
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-6.3.1.tgz#263924e4c73ee239f446180d40d9f09cc40607e9"
   dependencies:
     classnames "^2.2.3"
     lodash.isfunction "^3.0.9"
