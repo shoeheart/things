@@ -5,3 +5,65 @@ created free tier postgresql 10.4 rds instance
 created free tier ec2 ami linux 2 instance
 configured billing.codebarn.com s3 bucket for billing, and billing alerts
 created rds_ssh.sh to tunnel to private rds via ec2 so can connect pgadmin
+
+brew install awscli
+aws configure
+(enter access key and secret access key for your IAM user)
+aws ecr get-login --no-include-email --region us-east-2
+generates big login command like:
+docker login -u AWS -p Nms1bTI2WnU1RXVJVms9IiwidmVyc2lvbiI6IjIiLCJ0eXBlIjoiREFUQV9LRVkiLCJleHBpcmF0aW9uIjoxNTMyNzYyNDkzfQ== https://188975917675.dkr.ecr.us-east-2.amazonaws.com
+
+from: https://gorails.com/setup/ubuntu/18.04
+
+sudo apt update
+sudo apt upgrade
+
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+sudo apt-get update
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev nodejs yarn
+
+cd
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+exec $SHELL
+
+rbenv install 2.5.1
+rbenv global 2.5.1
+ruby -v
+
+gem install bundler
+rbenv rehash
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# add github deploy key:
+ssh-keygen -t rsa -b 4095 -C "engineering@codebarn.com"
+codebarn_engineering_github
+add to github
+sudo mkdir /workspace
+sudo chown ubuntu /workspace
+sudo chgrp ubuntu /workspace
+cd /workspace
+git clone git@github.com:shoeheart/things.git
+
+# gem install rails -v 5.2.0
+
+sudo sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql-common
+sudo apt-get install postgresql-10 libpq-dev
+sudo systemctl stop postgresql.service
+sudo systemctl disable postgresql.service
+
+
