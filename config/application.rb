@@ -25,7 +25,11 @@ module Things
     config.load_defaults 5.2
 
     # Settings in config/environments/* take precedence over those specified here.
-    config.paths.add( "lib", eager_load: true )
+    # moved lib to app/lib since that's automatically eager/auto loaded
+    # and actual ./lib has other development only classes in it that
+    # don't have their dependencies loaded in production environment
+    # and hence make rails server fail to launch
+    # config.paths.add( "lib", eager_load: true )
 
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
