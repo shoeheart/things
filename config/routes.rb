@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :minerals
   root "home#index"
   get "/" => "home#index"
+  get "/ping", to:"application#ping"
 
   get "/animals/react" => "animals#react_index"
   get "/animals/react_new" => "animals#react_new"

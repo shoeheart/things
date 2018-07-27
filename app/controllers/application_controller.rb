@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   prepend_view_path Rails.root.join("frontend")
   before_action :set_cache_buster
 
+  def ping
+    render plain: "ok"
+  end
+
   def set_cache_buster
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"

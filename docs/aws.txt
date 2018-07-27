@@ -66,4 +66,5 @@ sudo apt-get install postgresql-10 libpq-dev
 sudo systemctl stop postgresql.service
 sudo systemctl disable postgresql.service
 
+gem install foreman
 
