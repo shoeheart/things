@@ -1,5 +1,4 @@
-server: bin/rails server
-# assets: bin/webpack-dev-server
-batch: QUEUE=batch bundle exec rails jobs:work
-interactive: QUEUE=interactive bundle exec rails jobs:work
-immediate: QUEUE=immediate bundle exec rails jobs:work
+web: /home/ubuntu/.rbenv/shims/bundle exec rails server
+batch: /home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
+interactive: /home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
+immediate: /home/ubuntu/.rbenv/shims/bundle exec rails jobs:work

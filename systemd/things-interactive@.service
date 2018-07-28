@@ -1,0 +1,17 @@
+[Unit]
+PartOf=things-interactive.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/workspace/things
+Environment=PORT=%i
+Environment=RAILS_ENV=production
+Environment=QUEUE=interactive
+ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+KillMode=mixed
+TimeoutStopSec=5

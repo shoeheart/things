@@ -68,3 +68,23 @@ sudo systemctl disable postgresql.service
 
 gem install foreman
 
+
+# setup foreman as service
+cd /workspace/things
+mkdir systemd
+foreman export systemd systemd -f Procfile.production -a things
+sudo su -
+cd /lib/systemd/system
+cp -r /workspace/things/systemd/* .
+systemctl start things.target
+systemctl --state=failed
+
+# still had to hand edit a bunch in the end but this got close
+foreman export --env .env.production --port 5000 --app things --user ubuntu -f Procfile.production systemd systemd
+
+also had to add this to root/.bashrc since rbenv only installs for
+local user "ubuntu" and these are required to run rails executables
+in systemd commands:
+export RBENV_ROOT=/home/ubuntu/.rbenv
+export PATH="/home/ubuntu/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
