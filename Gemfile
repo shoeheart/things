@@ -46,6 +46,8 @@ group :development, :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "rspec-rails"
+  # gem "faker" # pulled out for prod too for now while still seeding prod
+  gem "rubocop"
   gem "factory_bot"
   gem "factory_bot_rails"
   gem "dotenv"
