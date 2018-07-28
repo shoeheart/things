@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  if ENV["AUTH0_AUDIENCE"].blank?
+  if Rails.application.credentials.dig(:auth0, :audience).blank?
     audience =
       URI::HTTPS.build(
-        host: ENV["AUTH0_DOMAIN"],
+        host: Rails.application.credentials.dig(:auth0, :domain),
         path: "/userinfo"
       ).to_s
   else
-    audience = ENV["AUTH0_AUDIENCE"]
+    audience = Rails.application.credentials.dig(:auth0, :audience)
   end
 
   provider(
     :auth0,
-    ENV["AUTH0_CLIENT_ID"],
-    ENV["AUTH0_CLIENT_SECRET"],
-    ENV["AUTH0_DOMAIN"],
+    Rails.application.credentials.dig(:auth0, :client_id),
+    Rails.application.credentials.dig(:auth0, :client_secret),
+    Rails.application.credentials.dig(:auth0, :domain),
     callback_path: "/auth/auth0/callback",
     authorize_params: {
       scope: "openid email profile groups permissions roles",
