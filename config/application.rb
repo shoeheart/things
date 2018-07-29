@@ -7,7 +7,6 @@ require "rails"
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
-require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
@@ -25,6 +24,9 @@ module Things
     config.load_defaults 5.2
 
     # Settings in config/environments/* take precedence over those specified here.
+    # Use a real queuing backend for Active Job (and separate queues per environment)
+    config.active_job.queue_adapter = :delayed_job
+
     # moved lib to app/lib since that's automatically eager/auto loaded
     # and actual ./lib has other development only classes in it that
     # don't have their dependencies loaded in production environment
@@ -47,3 +49,4 @@ module Things
     end
   end
 end
+

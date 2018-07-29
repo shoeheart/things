@@ -3,9 +3,9 @@
 class AnimalsController < ApplicationController
   include Secured
 
-  before_action :set_animal, only: [:react_update_json, :update, :destroy]
+  before_action :set_animal, only: [:update, :destroy]
 
-  # TODO: Move to right helper spot
+  # TODO: move to somewhere shared
   def current_user_email
     email = nil
     if (
@@ -21,36 +21,10 @@ class AnimalsController < ApplicationController
   # GET /animals
   def index
     @animals = animals_with_display_attributes
-    @animal = Animal.new
-    @species = Species.all.order(:name)
   end
 
-  def react_index
-    @animals = animals_with_display_attributes
-    @animal = Animal.new
-    @species = Species.all.order(:name)
-  end
-
-  def react_create
-    @animal = Animal.new(animal_params)
-    Logidze.with_responsible(current_user_email) do
-      respond_to do |format|
-        if @animal.save!
-          format.html {
-            redirect_to animals_react_path,
-            notice: "Animal #{@animal.name} was successfully created."
-          }
-        else
-          format.html {
-            redirect_to animals_path,
-            notice: @animal.errors
-          }
-        end
-      end
-    end
-  end
-
-  def react_create_json
+  # POST for creating new instance
+  def create
     @animal = Animal.new(animal_params)
     Logidze.with_responsible(current_user_email) do
       if @animal.save!
@@ -67,21 +41,16 @@ class AnimalsController < ApplicationController
     end
   end
 
-  def react_new
+  # GET to show form to create new instance
+  def new
     @animal = Animal.new
     @species = Species.all.order(:name)
-  end
-
-  def react_edit
-    @animal = Animal.find(params[:id])
-    @species = Species.all.order(:name)
-  end
-
-  # GET /animals/1
-  def show
-    @animal = animal_with_display_attributes(params[:id])
-    @species = Species.all.order(:name)
     @toy_types = ToyType.all.order(:name)
+  end
+
+  # GET to display form to edit existing instance
+  def edit
+    @animal = Animal.find(params[:id])
     @toys =
       @animal.toys
         .joins(:toy_type)
@@ -90,34 +59,8 @@ class AnimalsController < ApplicationController
           toy_types.id as toy_type_id,
           toy_types.name as toy_type_name
         ")
-        .order("toys.acquired_on desc")
-  end
-
-  # POST /animals
-  #
-  # currently only used from index page so
-  # redirects back there only as opposed
-  # some new/edit form
-  def create
-    @animal = Animal.new(animal_params)
-
-    Logidze.with_responsible(current_user_email) do
-      respond_to do |format|
-        if @animal.save!
-          # re-read animal to add in the species and toy synthetic attributes
-          @animal = animal_with_display_attributes(@animal.id)
-          format.html {
-            redirect_to animals_path,
-            notice: "Animal #{@animal.name} was successfully created."
-          }
-        else
-          format.html {
-            redirect_to animals_path,
-            notice: @animal.errors
-          }
-        end
-      end
-    end
+        .order("toys.acquired_on desc, toy_type_name asc")
+    @species = Species.all.order(:name)
   end
 
   # POST /animal/1/add_toy
@@ -161,22 +104,6 @@ class AnimalsController < ApplicationController
   # PATCH/PUT /animals/1
   def update
     Logidze.with_responsible(current_user_email) do
-      respond_to do |format|
-        format.html {
-          redirect_to @animal,
-          notice: (
-            @animal.update(animal_params) ?
-              "Animal was successfully updated." :
-              @animal.errors
-          )
-        }
-      end
-    end
-  end
-
-  # PATCH/PUT /animals/1
-  def react_update_json
-    Logidze.with_responsible(current_user_email) do
       if @animal.update(animal_params)
         render json: {
           animal: @animal,
@@ -190,7 +117,6 @@ class AnimalsController < ApplicationController
       end
     end
   end
-
 
   # DELETE /animals/1
   def destroy
@@ -236,23 +162,6 @@ class AnimalsController < ApplicationController
           count(toys.id) as toy_count
         ")
         .group("animals.id, animals.name, species.name")
-        .order("animals.name")
-    end
-
-    def animal_with_display_attributes(id)
-      Animal
-        .joins(:species)
-        .left_outer_joins(:toys)
-        .select("
-          animals.id,
-          animals.name,
-          animals.species_id,
-          animals.birth_date,
-          animals.is_vaccinated,
-          species.name as species_name,
-          count(toys.id) as toy_count
-        ")
-        .group("animals.id, animals.name, species.name")
-        .find(id)
+        .order("animals.name, species.name")
     end
 end

@@ -41,4 +41,20 @@ module SessionHelper
   def say_hello
     "Hello, world"
   end
+
+  def is_logged_in?
+    !current_user_email.empty?
+  end
+
+  def current_user_email
+    email = nil
+    if (
+      session[:userinfo] &&
+      session[:userinfo]["info"] &&
+      session[:userinfo]["info"]["email"]
+    )
+      email = session[:userinfo]["info"]["email"]
+    end
+    email
+  end
 end

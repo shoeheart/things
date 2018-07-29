@@ -99,7 +99,7 @@ toy_types = ToyType.all.to_a
       ([ (1..2).to_a.sample, Animal.not_adopted.count ].min).times { | i |
         puts "Adopting #{(i + 1).ordinalize} animal..."
         animal = Animal.not_adopted.first
-        PetOwnership.create(
+        AnimalAdoption.create(
           person: p,
           animal: animal,
           adopted_on: Faker::Date.between(animal.birth_date, Date.today)
@@ -108,3 +108,5 @@ toy_types = ToyType.all.to_a
     end
   }
 }
+
+::BearNewAnimalJob.schedule!

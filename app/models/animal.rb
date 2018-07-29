@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Animal < ApplicationRecord
+class Animal < SoftDeleteRecord
   has_logidze
-  has_one :pet_ownership
-  has_one :person, through: :pet_ownership
+  has_one :animal_adoption
+  has_one :person, through: :animal_adoption
   belongs_to :species
   has_many :toys, dependent: :destroy
-
-  has_many_attached :images
 
   # must use eigen class to pull class methods into symbol namespace
   class << self
@@ -31,19 +29,19 @@ class Animal < ApplicationRecord
   scope :not_adopted, -> {
     # note this could cause double join when used to get to Person
     # even though you don't have associated person if this scope is true
-    # left_outer_joins( :pet_ownership )
+    # left_outer_joins( :animal_adoption )
     # .where( "animal_id is null" )
     where("
-      animals.id not in ( select animal_id from pet_ownerships )
+      animals.id not in ( select animal_id from animal_adoptions )
     ")
   }
 
   scope :adopted, -> {
     # note this causes double join when used to get to Person
-    # joins( :pet_ownership )
-    # .where( "pet_ownerships.animal_id is not null" )
+    # joins( :animal_adoption )
+    # .where( "animal_adoptions.animal_id is not null" )
     where("
-      animals.id in ( select animal_id from pet_ownerships )
+      animals.id in ( select animal_id from animal_adoptions )
     ")
   }
 

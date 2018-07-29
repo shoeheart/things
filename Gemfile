@@ -7,7 +7,8 @@ ruby "2.5.1"
 
 gem "omniauth-auth0"
 gem "aws-sdk-s3"
-gem "delayed_job_active_record"# , "~> 4.1.4"
+gem "delayed_job_active_record"
+gem "delayed_job_recurring"
 gem "daemons"
 gem "logidze"
 

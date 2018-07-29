@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Toy < ApplicationRecord
+class Toy < SoftDeleteRecord
   has_logidze
   belongs_to :animal
   belongs_to :toy_type

@@ -236,6 +236,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
       $body$
       LANGUAGE plpgsql;
   SQL
+
   # call this after table creation
   def log_and_prevent_deletion(table,black_list_columns)
     raise "Invalid blacklist #{black_list_columns}" unless
@@ -264,14 +265,6 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
         );
     SQL
   end
-
-  create_table "minerals", force: :cascade do |t|
-    t.string "name"
-    t.boolean "igneous"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-  log_and_prevent_deletion("minerals",%w(lock_version))
 
   create_table "species", force: :cascade do |t|
     t.string "name", null: false
@@ -361,80 +354,43 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
   end
   log_and_prevent_deletion("people",%w(lock_version))
 
-  create_table "pet_ownerships", force: :cascade do |t|
+  create_table "animal_adoptions", force: :cascade do |t|
     t.date "adopted_on", null: false
     t.references(
       :animal,
       foreign_key: {
-        name: "pet_ownerships_fk_animals",
+        name: "animal_adoptions_fk_animals",
       },
       index: {
-        name: "index_pet_ownerships_on_animal_id"
+        name: "index_animal_adoptions_on_animal_id"
       },
       null: false
     )
     t.references(
       :person,
       foreign_key: {
-        name: "pet_ownerships_fk_people",
+        name: "animal_adoptions_fk_people",
       },
       index: {
-        name: "index_pet_ownerships_on_person_id"
+        name: "index_animal_adoptions_on_person_id"
       },
       null: false
     )
     t.boolean "is_deleted", null: false, default: false
     t.jsonb "log_data", null: false
     t.integer "lock_version", null: false, default: 0
-    # any animal can only be owned by one person at a time.
+    # any animal can only be adopted by one person at a time.
     # don't need ["person_id","animal_id"] unique index since
     # this one takes care of that case as well
     t.index(
       ["animal_id"],
-      name: "index_pet_ownerships_animal",
+      name: "index_animal_adoptions_animal",
       unique: true,
-      where: "is_deleted",
+      where: "is_deleted = false",
       using: :btree
     )
   end
-  log_and_prevent_deletion("pet_ownerships",%w(lock_version))
-
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index(
-      ["blob_id"],
-      name: "index_active_storage_attachments_on_blob_id"
-    )
-    t.index(
-      [
-        "record_type",
-        "record_id",
-        "name",
-        "blob_id"
-      ],
-      name: "index_active_storage_attachments_uniqueness",
-      unique: true
-    )
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
-    t.index(
-      ["key"],
-      name: "index_active_storage_blobs_on_key",
-      unique: true
-    )
-  end
+  log_and_prevent_deletion("animal_adoptions",%w(lock_version))
 
   create_table :delayed_jobs, force: true do |t|
     t.integer :priority, default: 0, null: false # Allows some jobs to jump to the front of the queue
@@ -450,6 +406,10 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
     t.index(
       ["priority", "run_at"],
       name: "index_delayed_jobs_priority_run_at"
+    )
+    t.index(
+      ["queue"],
+      name: "index_delayed_jobs_queue"
     )
   end
 end

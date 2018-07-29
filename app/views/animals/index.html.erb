@@ -1,3 +1,7 @@
-<%= c("menu") do %>
-  <%= c("animals", animals: @animals) %>
-<% end %>
+<%=
+  react_component(
+    "AnimalsIndexPage",
+    { animals: @animals },
+    prerender: true
+  )
+%>

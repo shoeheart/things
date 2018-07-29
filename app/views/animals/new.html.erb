@@ -1,0 +1,12 @@
+<%=
+  react_component(
+    "AnimalPage",
+    {
+      animal: @animal,
+      species: @species,
+      authenticity_token: session[:_csrf_token],
+      versions: nil
+    },
+    prerender: true
+  )
+%>

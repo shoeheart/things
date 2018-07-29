@@ -1,1 +1,0 @@
-import "./animal-form.css";

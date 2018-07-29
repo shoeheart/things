@@ -1,3 +1,14 @@
-<%= c("menu") do %>
-  <%= c("profile", user: @user) %>
-<% end %>
+<%=
+  react_component(
+    "ProfilePage",
+    {
+      permissions: get_permissions,
+      user_image: @user["info"]["image"],
+      user_name: @user["info"]["name"],
+      normalized_user_profile: JSON.pretty_generate(@user["info"]),
+      full_user_profile: JSON.pretty_generate(@user["extra"]["raw_info"]),
+      full_omniauth_hash: JSON.pretty_generate(@user)
+    },
+    prerender: true
+  )
+%>

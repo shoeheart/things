@@ -15,4 +15,13 @@ class ApplicationController < ActionController::Base
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
+
+  # move previous view session_helper code into application controller
+  # since we're moving to React
+  def get_state
+    state = SecureRandom.hex(24)
+    session["omniauth.state"] = state
+
+    state
+  end
 end

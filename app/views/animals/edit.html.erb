@@ -1,0 +1,15 @@
+<%=
+  react_component(
+    "AnimalPage",
+    {
+      animal: @animal,
+      species: @species,
+      toys: @toys,
+      authenticity_token: session[:_csrf_token],
+      versions: Util::AuditTrail.to_hash(
+        logidze_versions: @animal.log_data.versions
+      )
+    },
+    prerender: true
+  )
+%>

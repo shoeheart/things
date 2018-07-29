@@ -1,8 +1,7 @@
-<%= c("menu") do %>
-  <%= c("home") %>
-  <hr/>
-  <%= rc("jason/Jason", { greeting: "Buzz off" }) %>
-  <hr/>
-  <%= rc("jason/Jason", { greeting: "I was rude," }) %>
-  <hr/>
-<% end %>
+<%=
+  react_component(
+    "HomePage",
+    { current_user_email: current_user_email },
+    prerender: true
+  )
+%>

@@ -1,0 +1,42 @@
+animals_index
+  {
+    people_count
+    animals_count
+  available_for_adoption_count
+  already_adopted_count
+  name, species, birth_date, is_adopted, toy_count | edit | destroy
+  {
+
+  <AnimalDashboardPage>
+    <Menu>
+    <AnimalDashboard>
+  <AnimalList>
+    <AnimalListRow>
+
+
+
+animal_edit
+  name, birth_date, species,
+
+  people actions: adopt_animal, unadopt_animal
+  animal actions: be_born, die
+  toy actions: be_gifted, be_lost, be_transferred
+
+  people attributes:
+    mutable: is_deleted, first_name, last_name, email
+    immutable: birth_date, is_deleted
+  animal attributes:
+    mutable: is_deleleted, name, is_vaccinated
+    immutable: species, birth_date
+  animal_ownership attributes:
+    mutable: is_deleted
+    immutable: adopted_on, person, animal
+  toy attributes:
+    mutable: is_deleted, animal_id, acquired_on
+    immutable: toy_type_id
+  toy_type attributes:
+    mutable: name
+    immutable: is_deleted, toy_type_id
+  species attributes:
+    mutable: name
+    immutable: is_deleted, toy_type_id
