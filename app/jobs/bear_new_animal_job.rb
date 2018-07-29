@@ -2,7 +2,7 @@
 
 class BearNewAnimalJob
   include Delayed::RecurringJob
-  run_every 3.minutes
+  run_every 1.minute
   queue 'batch'
 
   def initialize
@@ -16,10 +16,9 @@ class BearNewAnimalJob
   end
 
   def perform
+    puts "Starting BearNewAnimalJob..."
     Random.rand(0..2).times { |i|
       a = nil
-      puts @current_user_emails
-      puts @current_user_emails.sample
       Logidze.with_responsible(@current_user_emails.sample) {
         a =
           Animal.create(
