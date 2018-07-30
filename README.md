@@ -22,6 +22,8 @@ I used a number of web posts to guide this including but not limited to:
   * ToyType - Type of Toy
   * Species - List of possible Animal species
 
+![image](https://user-images.githubusercontent.com/953248/43428501-2ce873ca-9424-11e8-94e9-e379c073f8c4.png)
+
 #### Background Jobs
 Currently, the db:seed creates 10 Person instances and populates Species and ToyType with lookup values.  It then schedules multiple recurring jobs that make the system record the data for events including:
   * New Animal given to shelter
