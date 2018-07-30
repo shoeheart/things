@@ -8,15 +8,14 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-current_user_emails = [
-  "sysadmin@codebarn.com",
-  "joe@codebarn.com",
-  "jack@codebarn.com",
-  "jill@codebarn.com",
-  "jughead@codebarn.com",
+shelter_emails = [
+  "joe@shelter.com",
+  "jack@shelter.com",
+  "jill@shelter.com",
 ]
 
-Logidze.with_responsible(current_user_emails[0]) {
+# create lookup values for toy types and species
+Logidze.with_responsible("sysadmin@codebarn.com") {
   10.times {
     Species.create(name: Faker::Ancient.unique.primordial)
   }
@@ -29,84 +28,24 @@ Logidze.with_responsible(current_user_emails[0]) {
 species = Species.all.to_a
 toy_types = ToyType.all.to_a
 
-5.times {
-  a = nil
-  Logidze.with_responsible(current_user_emails.sample) {
-    a =
-      Animal.create(
-        name: Faker::Name.first_name,
-        species: species.sample,
-        is_vaccinated: [ true, false ].sample,
-        birth_date: Random.rand(100..2000).days.ago
-      )
-    Random.rand(0..3).times { |i|
-      a.toys << Toy.new(
-        toy_type: toy_types.sample,
-        acquired_on: Random.rand(10..100).days.ago
-      )
-    }
-  }
-  Random.rand(1..2).times { |i|
-    Logidze.with_responsible(current_user_emails.sample) {
-      a.update_attributes(
-        name: Faker::Name.first_name,
-        species: species.sample,
-        is_vaccinated: [ true, false ].sample,
-        birth_date: Random.rand(100..2000).days.ago
-      )
-    }
-  }
-  Random.rand(1..2).times { |i|
-    Logidze.with_responsible(current_user_emails.sample) {
-      a.update_attributes(
-        species: species.sample,
-        is_vaccinated: [ true, false ].sample,
-      )
-    }
-  }
-  Random.rand(1..2).times { |i|
-    Logidze.with_responsible(current_user_emails.sample) {
-      a.update_attributes(
-        name: Faker::Name.first_name,
-        birth_date: Random.rand(100..2000).days.ago
-      )
-    }
-  }
-  Random.rand(1..2).times { |i|
-    Logidze.with_responsible(current_user_emails.sample) {
-      a.update_attributes(
-        name: Faker::Name.first_name,
-        species: species.sample,
-        is_vaccinated: [ true, false ].sample,
-        birth_date: Random.rand(100..2000).days.ago
-      )
-    }
-  }
-}
-3.times { |i|
+# Create some people
+10.times { |i|
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
-  Logidze.with_responsible(current_user_emails.sample) {
+  email = Faker::Internet.unique.email("#{first_name} #{last_name}")
+  Logidze.with_responsible(email) {
     p = Person.create(
       first_name: first_name,
       last_name: last_name,
       email: Faker::Internet.unique.email("#{first_name} #{last_name}"),
       birth_date: Faker::Date.between(8.years.ago, 50.years.ago),
     )
-
-    if ([ true, false ].sample)
-      puts "Trying to adopt..."
-      ([ (1..2).to_a.sample, Animal.not_adopted.count ].min).times { | i |
-        puts "Adopting #{(i + 1).ordinalize} animal..."
-        animal = Animal.not_adopted.first
-        AnimalAdoption.create(
-          person: p,
-          animal: animal,
-          adopted_on: Faker::Date.between(animal.birth_date, Date.today)
-        )
-      }
-    end
   }
 }
 
-::BearNewAnimalJob.schedule!
+# Schedule jobs to add/remove animals and adoptions and toys
+# to simulate actual usage
+::ShelterNewAnimalJob.schedule!
+::NewToyForAdoptedAnimalJob.schedule!
+::AdoptAnimalJob.schedule!
+::AnimalDiesJob.schedule!

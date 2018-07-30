@@ -55,6 +55,9 @@ class Menu extends React.Component {
                 </DropdownMenu>
               </UncontrolledDropdown>
               <NavItem>
+                <NavLink href="/dashboard">Dashboard</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink href="/profile">Profile</NavLink>
               </NavItem>
               <NavItem>

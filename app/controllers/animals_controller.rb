@@ -152,6 +152,7 @@ class AnimalsController < ApplicationController
       Animal
         .joins(:species)
         .left_outer_joins(:toys)
+        .left_outer_joins(:person)
         .select("
           animals.id,
           animals.name,
@@ -159,9 +160,18 @@ class AnimalsController < ApplicationController
           animals.birth_date,
           animals.is_vaccinated,
           species.name as species_name,
+          people.email as adopted_by_email,
           count(toys.id) as toy_count
         ")
-        .group("animals.id, animals.name, species.name")
+        .group("
+          animals.id,
+          animals.name,
+          animals.species_id,
+          animals.birth_date,
+          animals.is_vaccinated,
+          species.name,
+          people.email
+        ")
         .order("animals.name, species.name")
     end
 end

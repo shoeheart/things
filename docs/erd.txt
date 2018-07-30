@@ -1,0 +1,2 @@
+rails-erd
+brew install graphviz

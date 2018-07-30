@@ -12,6 +12,7 @@ class Animals extends React.Component {
             <tr>
               <th>Name</th>
               <th>Species</th>
+              <th>Adopted By</th>
               <th>Toy Count</th>
               <th>Action</th>
             </tr>

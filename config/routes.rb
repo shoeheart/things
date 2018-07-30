@@ -3,6 +3,8 @@
 Rails.application.routes.draw do
   root "home#index"
   get "/" => "home#index"
+  get "/dashboard" => "dashboard#index"
+  get "/dashboard/counts" => "dashboard#counts"
   get "/ping", to:"application#ping"
   get "/profile" => "profile#show"
   get "/logout" => "logout#logout"

@@ -52,6 +52,7 @@ group :development, :test do
   gem "factory_bot"
   gem "factory_bot_rails"
   gem "dotenv"
+  gem "rails-erd"
 end
 
 group :development do

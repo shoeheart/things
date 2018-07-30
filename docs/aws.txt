@@ -88,3 +88,14 @@ in systemd commands:
 export RBENV_ROOT=/home/ubuntu/.rbenv
 export PATH="/home/ubuntu/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+# deploy
+ssh ubuntu@ec2-18-222-124-92.us-east-2.compute.amazonaws.com
+sudo systemctl stop things.target
+cd /workspace/things
+git pull
+bundle install
+yarn install
+NODE_ENV=production bundle exec rails assets:precompile
+DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production bundle exec rails db:reset
+sudo shutdown -r now

@@ -8,6 +8,7 @@ class Animal extends React.Component {
       <tr>
         <td>{animal.name}</td>
         <td>{animal.species_name}</td>
+        <td>{animal.adopted_by_email}</td>
         <td>{animal.toy_count}</td>
         <td>
           <Button href={`/animals/${animal.id}/edit`}>Edit</Button>

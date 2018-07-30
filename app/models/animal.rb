@@ -7,6 +7,8 @@ class Animal < SoftDeleteRecord
   belongs_to :species
   has_many :toys, dependent: :destroy
 
+  MAX_TOYS_PER_ANIMAL = 3
+
   # must use eigen class to pull class methods into symbol namespace
   class << self
     def hello_immediate
@@ -25,36 +27,60 @@ class Animal < SoftDeleteRecord
     handle_asynchronously :hello_batch
   end
 
-
-  scope :not_adopted, -> {
+  scope :sheltered, -> {
     # note this could cause double join when used to get to Person
     # even though you don't have associated person if this scope is true
     # left_outer_joins( :animal_adoption )
     # .where( "animal_id is null" )
-    where("
-      animals.id not in ( select animal_id from animal_adoptions )
-    ")
+    where("animals.id not in ( #{AnimalAdoption.select(:animal_id).to_sql} )")
   }
 
   scope :adopted, -> {
     # note this causes double join when used to get to Person
     # joins( :animal_adoption )
     # .where( "animal_adoptions.animal_id is not null" )
-    where("
-      animals.id in ( select animal_id from animal_adoptions )
-    ")
+    where("animals.id in ( #{AnimalAdoption.select(:animal_id).to_sql} )")
   }
 
   scope :has_toys, -> {
-    # joins( :toys )
-    where("
-      animals.id in ( select animal_id from toys )
-    ")
+    where("animals.id in ( #{Toy.select(:animal_id).distinct.to_sql} )")
   }
 
   scope :has_no_toys, -> {
+    where("animals.id not in ( #{Toy.select(:animal_id).distinct.to_sql} )")
+  }
+
+  scope :eligible_to_receive_toy, -> {
     where("
-      animals.id not in ( select animal_id from toys )
+      animals.id in (
+        #{
+          Animal
+            .select("animals.id")
+            .distinct
+            .joins(:person)
+            .left_outer_joins(:toys)
+            .group("animals.id")
+            .having("count(toys.id) < " + MAX_TOYS_PER_ANIMAL.to_s)
+            .to_sql
+        }
+      )
+    ")
+  }
+
+  scope :ineligible_to_receive_toy, -> {
+    where("
+      animals.id not in (
+        #{
+          Animal
+            .select("animals.id")
+            .distinct
+            .joins(:person)
+            .left_outer_joins(:toys)
+            .group("animals.id")
+            .having("count(toys.id) < " + MAX_TOYS_PER_ANIMAL.to_s)
+            .to_sql
+        }
+      )
     ")
   }
 end
