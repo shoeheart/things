@@ -99,3 +99,64 @@ yarn install
 NODE_ENV=production bundle exec rails assets:precompile
 DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production bundle exec rails db:reset
 sudo shutdown -r now
+
+
+https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04
+585  sudo fallocate -l 1G /swapfile
+  586  ls -lh /swapfile
+  587  sudo chmod 600 /swapfile
+  588  ls -lh /swapfile
+  589  sudo mkswap /swapfile
+  590  sudo swapon --show
+  591  free -h
+  ubuntu@ip-172-31-23-126:/workspace/things$ cat /etc/fstab
+LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
+/swapfile none swap sw 0 0
+
+
+previous attempt from...ignore this:
+from:
+https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-16-04
+
+sudo swapon --show
+(not output means no swap is set up)
+free -h
+
+ubuntu@ip-172-31-23-126:/workspace/things$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:           983M        398M        194M        764K        391M        419M
+
+ubuntu@ip-172-31-23-126:/workspace/things$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            481M     0  481M   0% /dev
+tmpfs            99M  740K   98M   1% /run
+/dev/xvda1      7.7G  3.1G  4.7G  40% /
+tmpfs           492M     0  492M   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           492M     0  492M   0% /sys/fs/cgroup
+/dev/loop0       13M   13M     0 100% /snap/amazon-ssm-agent/150
+/dev/loop1       87M   87M     0 100% /snap/core/4917
+/dev/loop2       87M   87M     0 100% /snap/core/4650
+/dev/loop3       13M   13M     0 100% /snap/amazon-ssm-agent/295
+tmpfs            99M     0   99M   0% /run/user/1000
+
+
+sudo fallocate -l 1G /swapfile
+ubuntu@ip-172-31-23-126:/workspace/things$ sudo fallocate -l 1G /swapfile
+ubuntu@ip-172-31-23-126:/workspace/things$ ls -lh /swapfile
+-rw-r--r-- 1 root root 1.0G Jul 30 12:06 /swapfile
+
+ubuntu@ip-172-31-23-126:/workspace/things$ sudo chmod 600 /swapfile
+ubuntu@ip-172-31-23-126:/workspace/things$ ls -lh /swapfile
+-rw------- 1 root root 1.0G Jul 30 12:06 /swapfile
+
+ubuntu@ip-172-31-23-126:/workspace/things$ sudo mkswap /swapfile
+Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
+no label, UUID=a616e637-dffb-49a0-89f7-21e679eee30d
+ubuntu@ip-172-31-23-126:/workspace/things$ sudo swapon --show
+ubuntu@ip-172-31-23-126:/workspace/things$
+(something wrong here since not showing any swap...will try reboot)
+
+ubuntu@ip-172-31-23-126:/workspace/things$ sudo cp /etc/fstab /etc/fstab.bak
+ubuntu@ip-172-31-23-126:/workspace/things$ echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+/swapfile none swap sw 0 0

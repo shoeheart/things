@@ -78,7 +78,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@rails/webpacker@3.5":
+"@rails/webpacker@^3.5":
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-3.5.5.tgz#8911c66bcefc8bc6b91270e92f0d39e3c2d43116"
   dependencies:
@@ -430,8 +430,8 @@ autoprefixer@^7.1.1, autoprefixer@^7.1.2:
     postcss-value-parser "^3.2.3"
 
 aws-sdk@^2.222.1:
-  version "2.282.1"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.282.1.tgz#3e425b76c9a98d3374c8d70660f83619f66c92fd"
+  version "2.283.1"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.283.1.tgz#bfee17080ba282097193863c4f32b134bedecef4"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -7002,8 +7002,8 @@ stream-browserify@^2.0.1:
     readable-stream "^2.0.2"
 
 stream-each@^1.1.0:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/stream-each/-/stream-each-1.2.2.tgz#8e8c463f91da8991778765873fe4d960d8f616bd"
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/stream-each/-/stream-each-1.2.3.tgz#ebe27a0c389b04fbcc233642952e10731afa9bae"
   dependencies:
     end-of-stream "^1.1.0"
     stream-shift "^1.0.0"
