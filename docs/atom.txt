@@ -11,6 +11,7 @@ apm install language-babel
 apm install linter
 apm install linter-erb
 apm install linter-eslint
+apm install linter-jsonlint
 apm install linter-rubocop
 apm install linter-ui-default
 apm install vim-mode-plus

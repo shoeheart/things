@@ -85,6 +85,9 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  # Keeps last 5 log files which are rotate every 200MB
+  config.logger = Logger.new(config.paths["log"].first, 5, 200.megabytes)
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
