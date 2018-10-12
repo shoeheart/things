@@ -36,14 +36,9 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
 
   # add in logidze functions to maintain log_data field on each row
   # via triggers
+
   execute <<-SQL
-    CREATE OR REPLACE FUNCTION
-      logidze_version(
-        v bigint,
-        data jsonb,
-        ts timestamp with time zone,
-        blacklist text[] DEFAULT '{}'
-      ) RETURNS jsonb AS $body$
+    CREATE OR REPLACE FUNCTION logidze_version(v bigint, data jsonb, ts timestamp with time zone, blacklist text[] DEFAULT '{}') RETURNS jsonb AS $body$
       DECLARE
         buf jsonb;
       BEGIN
@@ -55,14 +50,13 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
                   'c',
                   logidze_exclude_keys(data, VARIADIC array_append(blacklist, 'log_data'))
                  );
-        -- TODO: Could blow up if responsible party not set
-        IF current_setting('logidze.responsible',true) is null or
-           current_setting('logidze.responsible',true) = '' THEN
+        IF current_setting('logidze.meta',true) is null or
+           current_setting('logidze.meta',true) = '' THEN
           raise exception
-            'Cannot update database with null logidze.responsible';
+            'Cannot update database with null logidze.meta';
         END IF;
-        IF coalesce(current_setting('logidze.responsible',true), '') <> '' THEN
-          buf := jsonb_set(buf, ARRAY['r'], to_jsonb(current_setting('logidze.responsible')));
+        IF coalesce(current_setting('logidze.meta'), '') <> '' THEN
+          buf := jsonb_set(buf, ARRAY['m'], current_setting('logidze.meta')::jsonb);
         END IF;
         RETURN buf;
       END;
@@ -116,8 +110,8 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
           (log_data#>'{h,0,c}') || (log_data#>'{h,1,c}')
         );
 
-        IF (log_data#>'{h,1}' ? 'r') THEN
-          merged := jsonb_set(merged, ARRAY['r'], log_data#>'{h,1,r}');
+        IF (log_data#>'{h,1}' ? 'm') THEN
+          merged := jsonb_set(merged, ARRAY['m'], log_data#>'{h,1,m}');
         END IF;
 
         return jsonb_set(
@@ -141,6 +135,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
         new_v integer;
         size integer;
         history_limit integer;
+        debounce_time integer;
         current_version integer;
         merged jsonb;
         iterator integer;
@@ -150,7 +145,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
         ts_column text;
       BEGIN
         ts_column := NULLIF(TG_ARGV[1], 'null');
-        columns_blacklist := TG_ARGV[2];
+        columns_blacklist := COALESCE(NULLIF(TG_ARGV[2], 'null'), '{}');
 
         IF TG_OP = 'INSERT' THEN
           snapshot = logidze_snapshot(to_jsonb(NEW.*), ts_column, columns_blacklist);
@@ -170,6 +165,8 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
           END IF;
 
           history_limit := NULLIF(TG_ARGV[0], 'null');
+          debounce_time := NULLIF(TG_ARGV[3], 'null');
+
           current_version := (NEW.log_data->>'v')::int;
 
           IF ts_column IS NULL THEN
@@ -211,6 +208,21 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
 
           IF version->>'c' = '{}' THEN
             RETURN NEW;
+          END IF;
+
+          IF (
+            debounce_time IS NOT NULL AND
+            (version->>'ts')::bigint - (NEW.log_data#>'{h,-1,ts}')::text::bigint <= debounce_time
+          ) THEN
+            -- merge new version with the previous one
+            new_v := (NEW.log_data#>>'{h,-1,v}')::int;
+            version := logidze_version(new_v, (NEW.log_data#>'{h,-1,c}')::jsonb || changes, ts, columns_blacklist);
+            -- remove the previous version from log
+            NEW.log_data := jsonb_set(
+              NEW.log_data,
+              '{h}',
+              (NEW.log_data->'h') - (size - 1)
+            );
           END IF;
 
           NEW.log_data := jsonb_set(

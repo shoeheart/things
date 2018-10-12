@@ -15,7 +15,7 @@ shelter_emails = [
 ]
 
 # create lookup values for toy types and species
-Logidze.with_responsible("sysadmin@codebarn.com") {
+Logidze.with_meta(responsible_id: "sysadmin@codebarn.com") {
   10.times {
     Species.create(name: Faker::Ancient.unique.primordial)
   }
@@ -33,7 +33,7 @@ toy_types = ToyType.all.to_a
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
   email = Faker::Internet.unique.email("#{first_name} #{last_name}")
-  Logidze.with_responsible(email) {
+  Logidze.with_meta(responsible_id: email) {
     p = Person.create(
       first_name: first_name,
       last_name: last_name,

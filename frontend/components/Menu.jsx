@@ -45,6 +45,7 @@ class Menu extends React.Component {
               <NavItem>
                 <NavLink href="/animals">Animals</NavLink>
               </NavItem>
+              {/*
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Lookups
@@ -54,14 +55,9 @@ class Menu extends React.Component {
                   <DropdownItem href="/toys">Toys</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
+              */}
               <NavItem>
                 <NavLink href="/dashboard">Dashboard</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/profile">Profile</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/logout">Logout</NavLink>
               </NavItem>
             </Nav>
           </Collapse>

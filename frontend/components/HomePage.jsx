@@ -13,16 +13,7 @@ class HomePage extends React.Component {
           <p className="lead">
             Animals (and in future Vegetables and Minerals) need management
           </p>
-          {this.props.current_user_email ? (
-            <div>
-              <p>You&apos;re logged in! Feel free to manage some things!</p>
-              <p>
-                Or you may <a href="/logout">logout</a>
-              </p>
-            </div>
-          ) : (
-            <Button href="auth/auth0">Login or Signup!</Button>
-          )}
+          <p>Feel free to manage some things!</p>
         </Jumbotron>
       </div>
     );

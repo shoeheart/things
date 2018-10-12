@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.5.1"
 
 gem "omniauth-auth0"
-gem "aws-sdk-s3"
+# gem "aws-sdk-s3"
 gem "delayed_job_active_record"
 gem "delayed_job_recurring"
 gem "daemons"
@@ -32,7 +32,7 @@ gem "jbuilder"# , "~> 2.5"
 # gem "bcrypt", "~> 3.1.7"
 
 # Use ActiveStorage variant
-gem "mini_magick"# , "~> 4.8"
+# gem "mini_magick"# , "~> 4.8"
 
 # Use Capistrano for deployment
 # gem "capistrano-rails", group: :development
