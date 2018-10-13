@@ -3,7 +3,7 @@
 "Things" is an example application to practice and demonstrate use of numerous technologies useful in a website.  
 
 #### View Application
-You may signup and sign in to view the running application, hosted on a t2.micro instance and free-tier RDS instance at AWS:
+You may view the running application, hosted on a t2.micro instance and free-tier RDS Postgresql instance at AWS:
 
 https://things.codebarn.com
 
