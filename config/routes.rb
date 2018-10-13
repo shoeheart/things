@@ -5,11 +5,8 @@ Rails.application.routes.draw do
   get "/" => "home#index"
   get "/dashboard" => "dashboard#index"
   get "/dashboard/counts" => "dashboard#counts"
-  get "/ping", to:"application#ping"
-  get "/profile" => "profile#show"
-  get "/logout" => "logout#logout"
-  get "/auth/auth0/callback" => "auth0#callback"
-  get "/auth/failure" => "auth0#failure"
-
   resources :animals, except: [:show]
+
+  # uptime health monitoring
+  get "/ping" => "application#ping"
 end

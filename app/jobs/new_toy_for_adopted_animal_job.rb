@@ -14,7 +14,7 @@ class NewToyForAdoptedAnimalJob
     receiving_animal = Animal.eligible_to_receive_toy.shuffle.first
 
     if receiving_animal
-      Logidze.with_responsible(receiving_animal.person.email) {
+      Logidze.with_meta(responsible_id: receiving_animal.person.email) {
         Delayed::Worker.logger.debug(
           "NewToyForAdoptedAnimalJob: #{receiving_animal.name} getting new toy"
         )

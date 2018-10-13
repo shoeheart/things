@@ -15,7 +15,9 @@ class Toys extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.toys.map(toy => <Toy key={toy.id} toy={toy} />)}
+            {this.props.toys.map(toy => (
+              <Toy key={toy.id} toy={toy} />
+            ))}
           </tbody>
         </Table>
       </div>

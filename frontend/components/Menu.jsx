@@ -3,16 +3,16 @@ import logo from "components/static/barn-50x50.jpeg";
 import Clock from "components/Clock.jsx";
 import {
   Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
+  // DropdownItem,
+  // DropdownMenu,
+  // DropdownToggle,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown
+  NavLink // ,
+  // UncontrolledDropdown
 } from "reactstrap";
 
 class Menu extends React.Component {
@@ -23,11 +23,13 @@ class Menu extends React.Component {
       isOpen: false
     };
   }
+
   toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
   };
+
   render() {
     return (
       <div>

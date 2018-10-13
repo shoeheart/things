@@ -49,4 +49,3 @@ module Things
     end
   end
 end
-

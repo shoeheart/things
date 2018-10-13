@@ -3,7 +3,7 @@
 class AnimalDiesJob
   include Delayed::RecurringJob
   run_every 87.seconds
-  queue 'batch'
+  queue "batch"
 
   def initialize
   end
@@ -13,12 +13,14 @@ class AnimalDiesJob
     animal_to_die = Animal.adopted.order("birth_date asc").first
 
     if animal_to_die
-      Logidze.with_responsible(animal_to_die.person.email) {
-        AnimalAdoption.find_by( animal: animal_to_die ).destroy
+      Logidze.with_meta(responsible_id: animal_to_die.person.email) {
+        AnimalAdoption.find_by(animal: animal_to_die).destroy
         animal_to_die.toys.destroy_all
         animal_to_die.destroy
       }
-      Delayed::Worker.logger.debug "AnimalDiesJob: #{animal_to_die.name} has died"
+      Delayed::Worker.logger.debug(
+        "AnimalDiesJob: #{animal_to_die.name} has died"
+      )
     end
 
     Delayed::Worker.logger.debug "AnimalDiesJob: Done"

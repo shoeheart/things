@@ -3,7 +3,7 @@
 class AdoptAnimalJob
   include Delayed::RecurringJob
   run_every 20.seconds
-  queue 'batch'
+  queue "batch"
 
   def initialize
   end
@@ -13,12 +13,18 @@ class AdoptAnimalJob
     adoptable_animal = Animal.sheltered.shuffle.first
     adopter = Person.eligible_to_adopt.shuffle.first
 
-    Delayed::Worker.logger.debug "AdoptAnimalJob: Adoptable Animal: #{adoptable_animal}"
-    Delayed::Worker.logger.debug "AdoptAnimalJob: Adopter: #{adopter}"
+    Delayed::Worker.logger.debug(
+      "AdoptAnimalJob: Adoptable Animal: #{adoptable_animal}"
+    )
+    Delayed::Worker.logger.debug(
+      "AdoptAnimalJob: Adopter: #{adopter}"
+    )
 
     if adoptable_animal && adopter
-      Delayed::Worker.logger.debug "AdoptAnimalJob: #{adopter.email} adopting #{adoptable_animal.name}"
-      Logidze.with_responsible(adopter.email) {
+      Delayed::Worker.logger.debug(
+        "AdoptAnimalJob: #{adopter.email} adopting #{adoptable_animal.name}"
+      )
+      Logidze.with_meta(responsible_id: adopter.email) {
         AnimalAdoption.create(
           person: adopter,
           animal: adoptable_animal,

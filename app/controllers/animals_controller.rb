@@ -5,19 +5,6 @@ class AnimalsController < ApplicationController
 
   before_action :set_animal, only: [:update, :destroy]
 
-  # TODO: move to somewhere shared
-  def current_user_email
-    email = nil
-    if (
-      session[:userinfo] &&
-      session[:userinfo]["info"] &&
-      session[:userinfo]["info"]["email"]
-    )
-      email = session[:userinfo]["info"]["email"]
-    end
-    email
-  end
-
   # GET /animals
   def index
     @animals = animals_with_display_attributes
@@ -26,7 +13,7 @@ class AnimalsController < ApplicationController
   # POST for creating new instance
   def create
     @animal = Animal.new(animal_params)
-    Logidze.with_responsible(current_user_email) do
+    Logidze.with_meta(responsible_id: current_user_email) do
       if @animal.save!
         render json: {
           animal: @animal,
@@ -72,7 +59,7 @@ class AnimalsController < ApplicationController
         acquired_on: params[:acquired_on]
       )
 
-    Logidze.with_responsible(current_user_email) do
+    Logidze.with_meta(responsible_id: current_user_email) do
       respond_to do |format|
         format.html {
           redirect_to animal_path(params[:id]),
@@ -89,7 +76,7 @@ class AnimalsController < ApplicationController
   # DELETE /animals/:id/delete_toy/:toy_id
   def delete_toy
     @toy = Toy.find(params[:toy_id])
-    Logidze.with_responsible(current_user_email) do
+    Logidze.with_meta(responsible_id: current_user_email) do
       @toy.delete
     end
 
@@ -103,7 +90,7 @@ class AnimalsController < ApplicationController
 
   # PATCH/PUT /animals/1
   def update
-    Logidze.with_responsible(current_user_email) do
+    Logidze.with_meta(responsible_id: current_user_email) do
       if @animal.update(animal_params)
         render json: {
           animal: @animal,
@@ -120,7 +107,7 @@ class AnimalsController < ApplicationController
 
   # DELETE /animals/1
   def destroy
-    Logidze.with_responsible(current_user_email) {
+    Logidze.with_meta(responsible_id: current_user_email) {
       @animal.destroy
       respond_to do |format|
         format.html {

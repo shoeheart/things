@@ -23,7 +23,8 @@ class Clock extends React.Component {
   render() {
     return (
       <span className="badge">
-        &nbsp;&nbsp;{this.state.date.toLocaleTimeString()}
+        &nbsp;&nbsp;
+        {this.state.date.toLocaleTimeString()}
       </span>
     );
   }

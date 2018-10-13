@@ -3,7 +3,7 @@
 class ShelterNewAnimalJob
   include Delayed::RecurringJob
   run_every 6.seconds
-  queue 'batch'
+  queue "batch"
 
   def initialize
     @shelter_emails = [
@@ -20,7 +20,7 @@ class ShelterNewAnimalJob
     # assuming 2 animals per person, but not taking into account
     # how many animals the people already have
     if Animal.sheltered.count < (Person.count * 2)
-      Logidze.with_responsible(@shelter_emails.sample) {
+      Logidze.with_meta(responsible_id: @shelter_emails.sample) {
         name = Faker::Name.first_name
         Animal.create(
           name: name,
@@ -28,7 +28,9 @@ class ShelterNewAnimalJob
           is_vaccinated: [ true, false ].sample,
           birth_date: Random.rand(100..2000).days.ago
         )
-        Delayed::Worker.logger.debug "ShelterNewAnimalJob: Sheltered new animal #{name}"
+        Delayed::Worker.logger.debug(
+          "ShelterNewAnimalJob: Sheltered new animal #{name}"
+        )
       }
     end
 

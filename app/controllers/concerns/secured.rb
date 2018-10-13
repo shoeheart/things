@@ -3,11 +3,15 @@
 module Secured
   extend ActiveSupport::Concern
 
-  included do
-    before_action :logged_in_using_omniauth?
-  end
+  # included do
+  #   before_action :logged_in?
+  # end
+  #
+  # def logged_in?
+  #   redirect_to "/" unless session[:userinfo].present?
+  # end
 
-  def logged_in_using_omniauth?
-    redirect_to "/" unless session[:userinfo].present?
+  def current_user_email
+    "not.logged.in@codebarn.com"
   end
 end
