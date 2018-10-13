@@ -112,6 +112,7 @@ sudo systemctl stop things.target
 cd /workspace/things
 git pull
 bundle install
+# first time rails won't be visible in path so logout and back in
 rails webpacker:clobber
 yarn install
 NODE_ENV=production bundle exec rails assets:precompile
@@ -124,6 +125,7 @@ sudo shutdown -r now
 sudo su -
 cd /lib/systemd/system
 cp /workspace/<repo>/systemd/* .
+exit
 sudo systemctl enable <yourapp>.target
 sudo systemctl list-unit-files | grep <yourapp>
 
