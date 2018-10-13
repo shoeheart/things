@@ -1,162 +1,189 @@
-moved all codebarn.* domains to aws
-moved dns for codebarn.* domains to aws
-generated free *.codebarn.* ssl certs
-created free tier postgresql 10.4 rds instance
-created free tier ec2 ami linux 2 instance
-configured billing.codebarn.com s3 bucket for billing, and billing alerts
-created rds_ssh.sh to tunnel to private rds via ec2 so can connect pgadmin
+(see ami.txt for how our AMI got created)
 
-brew install awscli
-aws configure
-(enter access key and secret access key for your IAM user)
-aws ecr get-login --no-include-email --region us-east-2
-generates big login command like:
-docker login -u AWS -p Nms1bTI2WnU1RXVJVms9IiwidmVyc2lvbiI6IjIiLCJ0eXBlIjoiREFUQV9LRVkiLCJleHBpcmF0aW9uIjoxNTMyNzYyNDkzfQ== https://188975917675.dkr.ecr.us-east-2.amazonaws.com
+now that AMI is created, create instances using these steps:
 
-from: https://gorails.com/setup/ubuntu/18.04
+step 1: choose latest AMI
 
-sudo apt update
-sudo apt upgrade
+step 2: choose t2.micro
 
+step 3:
+number of instances 1
+purchasing option unchecked
+network default
+subnet no preference
+auto-assign public ip (that's the default)
+turn on termination protection
+no placement group
+no IAM role
+shutdown behavior stop
+no detailed monitoring
+EBS optimized instance (already checked since is required by instance type)
+tenancy shared
+turn on t2/t3 unlimited bursting since it may at most double cost (unlikely)
+(see https://aws.amazon.com/blogs/aws/new-t3-instances-burstable-cost-effective-performance/)
+next
 
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+step 4:
+change storage to 20 GB general purpose ssd (GP2)
+keep delete on termination (will warn as long as protection is enabled above)
+not encrypted
 
-sudo apt-get update
-sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev nodejs yarn
+step 5:
+skip tags
 
+step 6:
+select existing security group, choose both:
+ec2-ssh
+lb-to-port-5000
+
+review and launch
+
+click launch
+pick existing codebarn_ohio key pair
+acknowledge
+click launch instances
+
+rename to right instance name in ec2 dashboard (like things)
+ssh-add -K ~/.ssh/codebarn_ohio.pem
+copy public IP address from EC2 dashboard
+ssh ubuntu@<public IP>
+
+#
+# set machine hostname
+#
+sudo vi /etc/hosts
+  (just change 127.0.0.1 from localhost to new hostname)
+  (don't change any of the ipv6 entries)
+sudo vi /etc/hostname
+sudo hostname <new-hostname-like-name-of-workspace-repo>
+
+# create a github deploy key:
 cd
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-exec $SHELL
+cd .ssh
+rm id_rsa*
+ssh-keygen -t rsa -b 4096 -C "engineering@codebarn.com"
+cat id_rsa.pub
+# take defaults and no passphrase
+# add to whichever github repo you'll be cloning from
+# name it same as hostname you picked
+# allow write access
+# (each deploy key can only be used on one repo so use one per machine)
 
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-exec $SHELL
-
-rbenv install 2.5.1
-rbenv global 2.5.1
-ruby -v
-
-gem install bundler
-rbenv rehash
-
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# add github deploy key:
-ssh-keygen -t rsa -b 4095 -C "engineering@codebarn.com"
-codebarn_engineering_github
-add to github
-sudo mkdir /workspace
-sudo chown ubuntu /workspace
-sudo chgrp ubuntu /workspace
+#
+# clone repo
+#
 cd /workspace
-git clone git@github.com:shoeheart/things.git
+git clone git@github.com:shoeheart/<whatever>.git
 
-# gem install rails -v 5.2.0
+#
+# setup auto maintenance of GIT_COMMIT
+#
+# (with date)
+# git log --date=short --pretty=format:'%cd.%h' -n 1 | sed "s/-//g"
+#
+add .git/hooks/post-merge with contents:
+echo "git log --pretty=format:'%h' -n 1 > GIT_COMMIT" > .git/hooks/post-merge
+chmod 755 .git/hooks/post-merge
 
-sudo sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
-wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install postgresql-common
-sudo apt-get install postgresql-10 libpq-dev
-sudo systemctl stop postgresql.service
-sudo systemctl disable postgresql.service
+#
+# create GIT_COMMIT since first pull wouldn't do it without hook in place
+#
+git log --pretty=format:'%h' -n 1 > GIT_COMMIT
 
-gem install foreman
+#
+# if switching to a particular branch do:
+#
+git checkout -b <branch-name> origin/<branch-name>
 
 
-# setup foreman as service
-cd /workspace/things
-mkdir systemd
-foreman export systemd systemd -f Procfile.production -a things
-sudo su -
-cd /lib/systemd/system
-cp -r /workspace/things/systemd/* .
-systemctl start things.target
-systemctl --state=failed
+#
+# set up one time master/secret key
+#
+hand create config/master.key (rails 5.2)
+or config/secrets.yml.key (rails 5.1) with right contents
 
-# still had to hand edit a bunch in the end but this got close
-foreman export --env .env.production --port 5000 --app things --user ubuntu -f Procfile.production systemd systemd
+# hand create .env if needed
+# (use single quotes to avoid escape problems in .env)
+VAR='...'
 
-also had to add this to root/.bashrc since rbenv only installs for
-local user "ubuntu" and these are required to run rails executables
-in systemd commands:
-export RBENV_ROOT=/home/ubuntu/.rbenv
-export PATH="/home/ubuntu/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
 
-# deploy
-ssh ubuntu@ec2-18-222-124-92.us-east-2.compute.amazonaws.com
+# initial / full reset deploy
 sudo systemctl stop things.target
 cd /workspace/things
 git pull
 bundle install
+rails webpacker:clobber
 yarn install
 NODE_ENV=production bundle exec rails assets:precompile
 DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production bundle exec rails db:reset
 sudo shutdown -r now
 
+#
+# set up systemd target files
+#
+sudo su -
+cd /lib/systemd/system
+cp /workspace/<repo>/systemd/* .
+sudo systemctl enable <yourapp>.target
+sudo systemctl list-unit-files | grep <yourapp>
 
-https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04
-585  sudo fallocate -l 1G /swapfile
-  586  ls -lh /swapfile
-  587  sudo chmod 600 /swapfile
-  588  ls -lh /swapfile
-  589  sudo mkswap /swapfile
-  590  sudo swapon --show
-  591  free -h
-  ubuntu@ip-172-31-23-126:/workspace/things$ cat /etc/fstab
-LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
-/swapfile none swap sw 0 0
+sudo systemctl start <target>.target
+sudo systemctl --state=failed
+debug from there if still not working
+
+#
+# if you edit anything, then do:
+#
+sudo systemctl daemon-reload
+
+reboot should also start everything
+
+#
+# create target group
+#
+group name things (or whatever instance is)
+protocol http
+port 5000
+target type instance
+vpc default
+health check protocol http
+health check path /ping
+
+#
+# add EC2 instance to target group
+#
+
+#
+# create load balancer
+#
+application load balancer
+name things
+scheme internet-facing
+ip address type ipv4
+keep http listener on 80
+add https listener on 443
+add all availability zones
+next
+choose a certificate from ACM
+*.codebarn.com
+security policy ELBSecurityPolicy-2016-08 (the default)
+select existing security group lb-http-https (deselect default group)
+next
+existing target group
+next
+next: review
+create
+once created, adjust listeners to route 80 to 443
+delete existing rule
+add redirect to https, 443, original host, path, query, 301 permanently moved
+
+once lb and targetgroups all set, enter CNAMEs to external DNS
+
+#
+# view sidekiq job journals
+#
+journalctl -f -u things-interactive.service
+journalctl -f -u things-batch.service
+journalctl -f -u things-web.service
 
 
-previous attempt from...ignore this:
-from:
-https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-16-04
-
-sudo swapon --show
-(not output means no swap is set up)
-free -h
-
-ubuntu@ip-172-31-23-126:/workspace/things$ free -h
-              total        used        free      shared  buff/cache   available
-Mem:           983M        398M        194M        764K        391M        419M
-
-ubuntu@ip-172-31-23-126:/workspace/things$ df -h
-Filesystem      Size  Used Avail Use% Mounted on
-udev            481M     0  481M   0% /dev
-tmpfs            99M  740K   98M   1% /run
-/dev/xvda1      7.7G  3.1G  4.7G  40% /
-tmpfs           492M     0  492M   0% /dev/shm
-tmpfs           5.0M     0  5.0M   0% /run/lock
-tmpfs           492M     0  492M   0% /sys/fs/cgroup
-/dev/loop0       13M   13M     0 100% /snap/amazon-ssm-agent/150
-/dev/loop1       87M   87M     0 100% /snap/core/4917
-/dev/loop2       87M   87M     0 100% /snap/core/4650
-/dev/loop3       13M   13M     0 100% /snap/amazon-ssm-agent/295
-tmpfs            99M     0   99M   0% /run/user/1000
-
-
-sudo fallocate -l 1G /swapfile
-ubuntu@ip-172-31-23-126:/workspace/things$ sudo fallocate -l 1G /swapfile
-ubuntu@ip-172-31-23-126:/workspace/things$ ls -lh /swapfile
--rw-r--r-- 1 root root 1.0G Jul 30 12:06 /swapfile
-
-ubuntu@ip-172-31-23-126:/workspace/things$ sudo chmod 600 /swapfile
-ubuntu@ip-172-31-23-126:/workspace/things$ ls -lh /swapfile
--rw------- 1 root root 1.0G Jul 30 12:06 /swapfile
-
-ubuntu@ip-172-31-23-126:/workspace/things$ sudo mkswap /swapfile
-Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
-no label, UUID=a616e637-dffb-49a0-89f7-21e679eee30d
-ubuntu@ip-172-31-23-126:/workspace/things$ sudo swapon --show
-ubuntu@ip-172-31-23-126:/workspace/things$
-(something wrong here since not showing any swap...will try reboot)
-
-ubuntu@ip-172-31-23-126:/workspace/things$ sudo cp /etc/fstab /etc/fstab.bak
-ubuntu@ip-172-31-23-126:/workspace/things$ echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-/swapfile none swap sw 0 0

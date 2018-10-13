@@ -1,5 +1,6 @@
 [Unit]
-Wants=things-web.target things-batch.target things-interactive.target things-immediate.target
+Description=Things HTTP and DelayedJob meta target
+Wants=things-web.service things-batch.service things-interactive.service things-immediate.service
 
 [Install]
 WantedBy=multi-user.target

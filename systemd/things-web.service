@@ -1,16 +1,17 @@
 [Unit]
-PartOf=things-web.target
+Description=Things HTTP Server Port 5000 Service
+PartOf=things.target
 
 [Service]
 User=ubuntu
 WorkingDirectory=/workspace/things
-Environment=PORT=%i
+Environment=PORT=5000
 Environment=RAILS_ENV=production
 ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails server
 Restart=always
 StandardInput=null
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=%n
+SyslogIdentifier=things-web.service
 KillMode=mixed
 TimeoutStopSec=5

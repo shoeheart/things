@@ -82,7 +82,7 @@ test:
 #
 production:
   <<: *default
-  database: things_production
-  host: codebarnrdsfree.c5ag4t891wvw.us-east-2.rds.amazonaws.com
+  database: things
+  host: <%= Rails.application.credentials.dig(:aws, :rds_host) %>
   username: <%= Rails.application.credentials.dig(:aws, :rds_username) %>
   password: <%= Rails.application.credentials.dig(:aws, :rds_password) %>

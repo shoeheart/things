@@ -1,0 +1,18 @@
+[Unit]
+Description=Things DelayedJob Immediate queue
+PartOf=things.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/workspace/things
+Environment=PORT=5200
+Environment=RAILS_ENV=production
+Environment=QUEUE=immediate
+ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=things-immediate.service
+KillMode=mixed
+TimeoutStopSec=5

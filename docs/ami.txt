@@ -1,0 +1,235 @@
+#
+# instructions for creating/maintaining baseline ubuntu AMI
+#
+from: https://gorails.com/setup/ubuntu/18.04
+
+create t2.micro instance from ubuntu 18.04 64 bit LTS
+with burst enabled, and sg ec2-ssh and lb-to-port-5000
+
+ssh ubuntu@18.221.3.120
+
+sudo apt update
+sudo apt upgrade -y
+  grub-pc install package maintainers version
+  grub-pc install to amazon EBS volume only
+  install package maintainers version of /boot/grub/menu.lst
+sudo apt autoremove -y
+
+#
+# add to end of .bashrc
+#
+shopt -s nocaseglob
+export PS1=$'`hostname`:`pwd` % '
+#alias ls="ls -alF --color=auto"
+alias ls="ls -alFG"
+export NODE_ENV=production
+export RAILS_ENV=production
+
+#
+# create .vimrc
+#
+:imap jk <Esc>
+set nocompatible
+set autoindent
+set expandtab
+set shiftwidth=2
+set tabstop=2
+set backspace=indent,eol,start
+set nobackup
+set nowritebackup
+set hlsearch
+set ff=dos
+autocmd BufWritePre * %s/\s\+$//e
+" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <space> :nohlsearch<Bar>:echo<CR>
+
+#
+# create .inputrc
+#
+set show-all-if-ambiguous on
+set visible-stats on
+set editing-mode vi
+set keymap vi
+set completion-ignore-case on
+
+#
+# add 1G swap space
+#
+https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04
+free -h
+cat /etc/fstab
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon --show
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
+ls -lh /swapfile
+free -h
+cat /etc/fstab
+LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
+/swapfile none swap sw 0 0
+
+#
+# reboot and check that top shows 1G of swap
+#
+sudo shutdown -r now
+ssh ubuntu@<public ip>
+free -h
+
+#
+# add node LTS version (can't use latest node with ember)
+#
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+
+#
+# add required packages
+#
+sudo apt update
+sudo apt install zip git curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev nodejs yarn redis apt-transport-https -y
+
+#
+# add postgres 10.x client
+#
+sudo sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+sudo apt update
+sudo apt install postgresql-client-10 -y
+sudo apt install libpq-dev -y
+
+
+#
+# install rbenv and ruby
+#
+cd
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+exec $SHELL
+
+rbenv install 2.5.1
+rbenv global 2.5.1
+ruby -v
+
+#
+# only bundler is required globally
+#
+gem install bundler
+rbenv rehash
+
+#
+# add this to root/.bashrc since rbenv only installs for
+# local user "ubuntu" and these are required to run rails executables
+# in systemd commands:
+#
+sudo su -
+vi .bashrc
+export RBENV_ROOT=/home/ubuntu/.rbenv
+export PATH="/home/ubuntu/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+:wq
+exit
+
+
+#
+# create destination where we'll deploy repo to
+#
+sudo mkdir /workspace
+sudo chown ubuntu /workspace
+sudo chgrp ubuntu /workspace
+
+#
+# setup git identity
+#
+git config --global user.email "engineering@codebarn.com"
+git config --global user.name "engineering"
+
+#
+# add latest docker (optional)
+# see https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update
+apt-cache policy docker-ce
+sudo apt install docker-ce -y
+sudo systemctl status docker
+
+#
+# add our user to docker "sudo" group
+#
+sudo usermod -aG docker ${USER}
+logout and back in
+
+#
+# verify docker listed in list of groups
+id -nG
+
+#
+# add aws cli
+# see https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-linux.html
+#
+# python3 already installed, so use that to install pip
+#
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+# verify this already in .profile:
+# export PATH=~/.local/bin:$PATH
+# logout and back in to get latest shell config
+pip --version
+pip install awscli --upgrade --user
+
+aws configure
+(info in password spreadsheet.  pick us-east-2 and json format)
+
+#
+# do another upgrade to catch everything
+#
+sudo apt update
+sudo apt upgrade
+
+
+#
+# shutdown and use aws command line to create AMI
+#
+sudo shutdown now
+
+#
+# use local machine aws command line to create AMI
+#
+# see for more instructions.  if you skip this, the AMI can't be
+# launched on a big instance that requires enhanced networking adapter
+#
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html
+# keys (for jason) in google docs "AWS Access Codes"
+aws configure
+AWS Access Key ID [****************SCJA]:
+AWS Secret Access Key [****************LwSn]:
+Default region name [us-east-2]:
+Default output format [json]:
+#
+# change <date>.01 to date and iteration so we can keep old AMIs
+#
+aws ec2 create-image --instance-id <ec2-instance-you-created-id> --name "20181012.01 ubuntu 18.04 ruby redis pg10client docker aws-cli"
+aws ec2 describe-images --image-id <ami-image-just-created> --query "Images[].EnaSupport"
+#
+# should display:
+#
+[
+    true
+]
+
+#
+# terminate temporary EC2 instance used to create the AMI using EC2 web console
+#
+
+# now you can launch new instances using that latest AMI using aws.txt
+# instructions
+
+

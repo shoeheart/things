@@ -1,10 +1,11 @@
 [Unit]
-PartOf=things-interactive.target
+Description=Things DelayedJob Interactive queue
+PartOf=things.target
 
 [Service]
 User=ubuntu
 WorkingDirectory=/workspace/things
-Environment=PORT=%i
+Environment=PORT=5300
 Environment=RAILS_ENV=production
 Environment=QUEUE=interactive
 ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
@@ -12,6 +13,6 @@ Restart=always
 StandardInput=null
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=%n
+SyslogIdentifier=tabletservice-interactive.service
 KillMode=mixed
 TimeoutStopSec=5

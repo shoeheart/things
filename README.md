@@ -41,19 +41,17 @@ The system is set to disallow deletion of any actual database rows, and rather u
 
 * Ruby 2.5.x / Rails 5.2
 
-* [react-rails](https://github.com/reactjs/react-rails) / React 16.x / Reactstrap 6.3.x
+* [react-rails](https://github.com/reactjs/react-rails) / React 16.x / Reactstrap 6.x
 
-* rails-webpacker 3.x including SSR Server Side Rendering
+* rails-webpacker 4.x including SSR Server Side Rendering
 
 * axios (for json get/put/patch)
 
 * Atom editor with ES6 eslint and Rubocop
 
-* Postgresql 10.4.x
+* Postgresql 10.5.x
 
 * [Logidze](https://github.com/palkan/logidze) - Postgresql Trigger based audit trail - independent of ActiveRecord or any application layer processing logic
-
-* [Auth0](https://auth0.com) - for hosted authentication / authorization including signup / signon via Google
 
 * AWS EC2 Hosting via systemd and AWS RDS for Postgresql hosting
 
@@ -63,18 +61,14 @@ The system is set to disallow deletion of any actual database rows, and rather u
 
 #### Running locally
 
-Due to the integration with Auth0, I have used `rails credentials:edit` to set values for the following variables.  The first time you execute this command it will create `config/secrets.yml` file which is excluded via .gitignore.  It also creates `config/credentials.yml.enc` which is included in git, but you will need to delete it and generate your own with the following information in order for this to work:
+I have used `rails credentials:edit` to set values for connecting to AWS RDS Postgres on production.  In development and test, you can just install Postgres.app for Mac or other normal way on Linux.  
+
+You will need to generate your own credentials file to run locally.  Execute `rails credentials:edit` and it will create `config/secrets.yml` file which is excluded via .gitignore.  It also creates `config/credentials.yml.enc` which is included in git, but you will need to delete it and generate your own with the following information in order for this to work:
 
 ```
 rails:
   secret_key_base: <make your own via `rails secret`>
 
-auth0:
-  client_id: <sign up for own free auth0.com and use your own key here>
-  client_secret: <sign up for own free auth0.com and use your own secret here>
-  domain: <use auth0 created domain like codebarn.auth0.com>
-  dev_callback_url: http://localhost:5000/auth/auth0/callback
-  prod_callback_url: https://<your-hosted-prod-site>/auth/auth0/callback
 ```
 
 #### Future Ideas

@@ -1,0 +1,18 @@
+[Unit]
+Description=Things DelayedJob Batch queue
+PartOf=things.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/workspace/things
+Environment=PORT=5100
+Environment=RAILS_ENV=production
+Environment=QUEUE=batch
+ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=things-batch.service
+KillMode=mixed
+TimeoutStopSec=5
