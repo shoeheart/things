@@ -121,7 +121,7 @@ class DashboardPage extends React.Component {
             <Col lg={3} md={6} sm={6} xs={12}>
               <NumberWidget
                 title="Dashboard refreshes"
-                number={this.state.counts.refreshes}
+                number={this.state.refreshes}
                 color="secondary"
               />
             </Col>
