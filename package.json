@@ -6,7 +6,9 @@
     "@rails/webpacker": "https://github.com/rails/webpacker.git",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.3",
+    "classnames": "^2.2.6",
     "eslint-plugin-react": "^7.11.1",
+    "faker": "^4.1.0",
     "jquery": "^3.3.1",
     "normalize.css": "^8.0.0",
     "popper.js": "^1.14.4",
@@ -38,7 +40,8 @@
       "prettier --write",
       "stylelint --fix",
       "git add"
-    ]
+    ],
+    "ignore": ["frontend/styles/reduction.css"]
   },
   "pre-commit": [
     "lint-staged"

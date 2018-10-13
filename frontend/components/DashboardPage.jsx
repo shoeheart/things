@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from "components/Menu.jsx";
-import { Card, CardTitle, CardSubtitle, CardBody } from "reactstrap";
+import { Col, Row, Container } from "reactstrap";
+import NumberWidget from "components/Widget/NumberWidget.jsx";
 
 const axios = require("axios");
 
@@ -43,72 +44,91 @@ class DashboardPage extends React.Component {
     return (
       <div>
         <Menu />
-        <Card>
-          <CardBody>
-            <CardTitle>Animals Adopted</CardTitle>
-            <CardSubtitle>{this.state.counts.animals_adopted}</CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>Animals Sheltered</CardTitle>
-            <CardSubtitle>{this.state.counts.animals_sheltered}</CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>Animals Died</CardTitle>
-            <CardSubtitle>{this.state.counts.animals_died}</CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>Total People</CardTitle>
-            <CardSubtitle>{this.state.counts.people}</CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>People Who Have Adopted</CardTitle>
-            <CardSubtitle>
-              {this.state.counts.people_who_have_adopted}
-            </CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>People Eligible to Adopt</CardTitle>
-            <CardSubtitle>
-              {this.state.counts.people_eligible_to_adopt}
-            </CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>People Who Have Not Adopted</CardTitle>
-            <CardSubtitle>
-              {this.state.counts.people_who_have_not_adopted}
-            </CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>Toys Owned by Adopted Animals</CardTitle>
-            <CardSubtitle>{this.state.counts.toys_owned}</CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>Toys Lost by Animals who have Died</CardTitle>
-            <CardSubtitle>{this.state.counts.toys_lost}</CardSubtitle>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <CardTitle>Dashboard Refreshes</CardTitle>
-            <CardSubtitle>{this.state.refreshes}</CardSubtitle>
-          </CardBody>
-        </Card>
+        <Container>
+          <Row>
+            {/*
+            <Col lg={3} md={6} sm={6} xs={12}>
+            */}
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Animals Adopted"
+                number={this.state.counts.animals_adopted}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Animals Sheltered"
+                number={this.state.counts.animals_sheltered}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Animals Died"
+                number={this.state.counts.animals_died}
+                color="secondary"
+              />
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Total people"
+                number={this.state.counts.people}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="People who have adopted"
+                number={this.state.counts.people_who_have_adopted}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="People eligible to adopt"
+                number={this.state.counts.people_eligible_to_adopt}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="People who have not adopted"
+                number={this.state.counts.people_who_have_not_adopted}
+                color="secondary"
+              />
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Toys owned by adopted animals"
+                number={this.state.counts.toys_owned}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Toys lost by dead animals"
+                number={this.state.counts.toys_lost}
+                color="secondary"
+              />
+            </Col>
+            <Col lg={3} md={6} sm={6} xs={12}>
+              <NumberWidget
+                title="Dashboard refreshes"
+                number={this.state.counts.refreshes}
+                color="secondary"
+              />
+            </Col>
+          </Row>
+          {/*
+          */}
+        </Container>
       </div>
     );
   }

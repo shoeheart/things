@@ -32,7 +32,7 @@ Currently, the db:seed creates 10 Person instances and populates Species and Toy
   * Oldest of adopted Animal dies, freeing up a position for a new AnimalAdoption
 
 #### Dashboard
-If you signup and sign in you can view the Dashboard to see counts of People, Animals, Adoptions, and Toys
+View the Dashboard to see counts of People, Animals, Adoptions, and Toys
 
 #### Soft Delete Behavior
 The system is set to disallow deletion of any actual database rows, and rather uses an is_deleted flag on each table.  This allows the log_data field on each row for each table to record and retain the full audit history of what data changed, when, and under whose authority.
@@ -59,6 +59,8 @@ The system is set to disallow deletion of any actual database rows, and rather u
 
 * [Delayed::Job](https://github.com/collectiveidea/delayed_job) and [delayed_job_recurring](https://github.com/amitree/delayed_job_recurring) - background job processing including recurring / scheduled jobs
 
+* [react-reduction](https://github.com/reduction-admin/react-reduction) - React and Bootstrap4 styling example to improve appearance
+
 #### Running locally
 
 I have used `rails credentials:edit` to set values for connecting to AWS RDS Postgres on production.  In development and test, you can just install Postgres.app for Mac or other normal way on Linux.  
@@ -68,12 +70,9 @@ You will need to generate your own credentials file to run locally.  Execute `ra
 ```
 rails:
   secret_key_base: <make your own via `rails secret`>
-
 ```
 
 #### Future Ideas
-
-Items that I will continue to chip away at:
 
 * Full CRUD screens for all Models (currently only allow Add/Edit of Animal which is enough to demonstrate React and show the Logidze audit trail values associated with Animal creation and edits.
 
