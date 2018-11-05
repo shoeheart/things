@@ -22,33 +22,18 @@
     "react_ujs": "^2.4.4",
     "reactstrap": "^6.5.0"
   },
-  "scripts": {
-    "lint-staged": "$(yarn bin)/lint-staged"
-  },
-  "lint-staged": {
-    "config/webpack/**/*.js": [
-      "prettier --write",
-      "eslint",
-      "git add"
-    ],
-    "frontend/**/*.js": [
-      "prettier --write",
-      "eslint",
-      "git add"
-    ],
-    "frontend/**/*.css": [
-      "prettier --write",
-      "stylelint --fix",
-      "git add"
-    ],
-    "ignore": [
-      "frontend/styles/reduction.css"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "linters": {
+      "config/webpack/**/*.js": [ "prettier --write", "eslint", "git add" ],
+      "frontend/**/*.js": [ "prettier --write", "eslint", "git add" ],
+      "frontend/**/*.css": [ "prettier --write", "stylelint --fix", "git add" ]
+    },
+    "ignore": [ "frontend/styles/reduction.css" ]
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
