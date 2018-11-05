@@ -25,8 +25,8 @@ yarn add eslint-config-prettier --dev
 yarn add eslint-import-resolver-webpack --dev
 yarn add eslint-plugin-import --dev
 yarn add eslint-plugin-prettier --dev
+yarn add husky --dev
 yarn add lint-staged --dev
-yarn add pre-commit --dev
 yarn add prettier --dev
 yarn add stylelint --dev
 yarn add stylelint-config-standard --dev
