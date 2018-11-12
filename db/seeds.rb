@@ -37,7 +37,7 @@ toy_types = ToyType.all.to_a
     p = Person.create(
       first_name: first_name,
       last_name: last_name,
-      email: Faker::Internet.unique.email("#{first_name} #{last_name}"),
+      email: email,
       birth_date: Faker::Date.between(8.years.ago, 50.years.ago),
     )
   }
@@ -49,3 +49,5 @@ toy_types = ToyType.all.to_a
 ::NewToyForAdoptedAnimalJob.schedule!
 ::AdoptAnimalJob.schedule!
 ::AnimalDiesJob.schedule!
+::NewPersonJob.schedule!
+::RenameAdoptedAnimalJob.schedule!

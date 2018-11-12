@@ -3,6 +3,8 @@ yarn add https://github.com/rails/webpacker.git
 yarn add auth0-lock
 yarn add aws-sdk
 yarn add axios
+yarn add classnames
+yarn add d3
 yarn add eslint-plugin-react
 yarn add jquery
 yarn add normalize.css

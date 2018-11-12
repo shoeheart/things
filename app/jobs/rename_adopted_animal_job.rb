@@ -2,7 +2,7 @@
 
 class RenameAdoptedAnimalJob
   include Delayed::RecurringJob
-  run_every 47.seconds
+  run_every 15.seconds
   queue "batch"
 
   def initialize
@@ -11,7 +11,10 @@ class RenameAdoptedAnimalJob
   def perform
     Delayed::Worker.logger.debug "RenameAdoptedAnimalJob: Start"
 
-    animal_to_rename = Animal.adopted.shuffle.first
+    animal_to_rename = Animal
+      .adopted.order(Arel.sql("random()"))
+      .limit(1)
+      .first
 
     if animal_to_rename
       Logidze.with_meta(responsible_id: animal_to_rename.person.email) {

@@ -2,6 +2,7 @@ import React from "react";
 import Menu from "components/Menu.jsx";
 import { Col, Row, Container } from "reactstrap";
 import NumberWidget from "components/Widget/NumberWidget.jsx";
+import * as d3 from "d3";
 
 const axios = require("axios");
 
@@ -10,12 +11,22 @@ class DashboardPage extends React.Component {
     super(props);
     this.state = {
       counts: this.props.counts,
-      refreshes: 0
+      refreshes: 0,
+      chart_data: [
+        {
+          label: "Animals",
+          adopted: this.props.counts.animals_adopted,
+          sheltered: this.props.counts.animals_sheltered,
+          died: 0 - this.props.counts.animals_died
+        }
+      ]
     };
   }
 
   componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 500);
+    this.timerID = setInterval(() => this.tick(), 200);
+    this.initializeGraph();
+    // DashboardPage.drawNumbers();
   }
 
   componentWillUnmount() {
@@ -30,7 +41,15 @@ class DashboardPage extends React.Component {
         // console.log( response );
         this.setState({
           counts: response.data,
-          refreshes: this.state.refreshes + 1
+          refreshes: this.state.refreshes + 1,
+          chart_data: [
+            {
+              label: "Animals",
+              adopted: response.data.animals_adopted,
+              sheltered: response.data.animals_sheltered,
+              died: 0 - response.data.animals_died
+            }
+          ]
         });
       })
       .catch(() => {
@@ -38,6 +57,182 @@ class DashboardPage extends React.Component {
         // console.log( response );
         // TODO: handle error here
       });
+    this.updateGraph();
+  }
+
+  static stackMin(serie) {
+    return d3.min(serie, d => d[0]);
+  }
+
+  static stackMax(serie) {
+    return d3.max(serie, d => d[1]);
+  }
+
+  static drawNumbers() {
+    d3.select("#jason")
+      .selectAll("p")
+      .data([4, 8, 15, 16, 23, 42])
+      .enter()
+      .append("p")
+      .text(d => `I’m number ${d}!`);
+  }
+
+  initializeGraph() {
+    /* eslint class-methods-use-this: "error" */
+
+    const series = d3
+      .stack()
+      .keys(["adopted", "sheltered", "died"])
+      .offset(d3.stackOffsetDiverging)(this.state.chart_data);
+
+    const svg = d3.select("svg");
+
+    const margin = { top: 20, right: 30, bottom: 30, left: 60 };
+
+    const width = 0 + svg.attr("width");
+
+    const height = 0 + svg.attr("height");
+
+    const x = d3
+      .scaleBand()
+      .domain(this.state.chart_data.map(d => d.label))
+      .rangeRound([margin.left, width - margin.right])
+      .padding(0.1);
+
+    const y = d3
+      .scaleLinear()
+      .domain([
+        d3.min(series, DashboardPage.stackMin),
+        d3.max(series, DashboardPage.stackMax)
+      ])
+      .rangeRound([height - margin.bottom, margin.top]);
+
+    const z = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // svg
+    //   .transition()
+    //   .duration(3000)
+    //   .style("background-color", "yellow");
+
+    svg
+      .append("g")
+      .selectAll("g")
+      .data(series)
+      .enter()
+      .append("g")
+      .attr("fill", d => z(d.key))
+      .selectAll("rect")
+      .data(d => d)
+      .enter()
+      .append("rect")
+      .attr("width", x.bandwidth)
+      .attr("x", d => x(d.data.label))
+      .attr("y", d => y(d[1]))
+      .attr("height", d => y(d[0]) - y(d[1]));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${y(0)})`)
+      .call(d3.axisBottom(x));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y));
+  }
+
+  updateGraph() {
+    /* eslint class-methods-use-this: "error" */
+
+    const series = d3
+      .stack()
+      .keys(["adopted", "sheltered", "died"])
+      .offset(d3.stackOffsetDiverging)(this.state.chart_data);
+
+    const svg = d3.select("svg");
+
+    const margin = { top: 20, right: 30, bottom: 30, left: 60 };
+
+    const width = 0 + svg.attr("width");
+
+    const height = 0 + svg.attr("height");
+
+    const x = d3
+      .scaleBand()
+      .domain(this.state.chart_data.map(d => d.label))
+      .rangeRound([margin.left, width - margin.right])
+      .padding(0.1);
+
+    const y = d3
+      .scaleLinear()
+      .domain([
+        d3.min(series, DashboardPage.stackMin),
+        d3.max(series, DashboardPage.stackMax)
+      ])
+      .rangeRound([height - margin.bottom, margin.top]);
+
+    const z = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // svg
+    //   .selectAll("g")
+    //   .data(series)
+    //   .selectAll("g")
+    //   .attr("fill", d => {
+    //     console.log(d);
+    //     console.log(d.key);
+    //     console.log(z(d.key));
+    //     return z(d.key);
+    //   })
+    //   .selectAll("rect")
+    //   .data(d => d)
+    //   .attr("x", d => {
+    //     console.log(d);
+    //     console.log(d.data);
+    //     console.log(d.data.label);
+    //     console.log(x(d.data.label));
+    //     return x(d.data.label);
+    //   })
+    //   .attr("y", d => {
+    //     console.log(d);
+    //     console.log(d[1]);
+    //     console.log(y(d[1]));
+    //     return y(d[1]);
+    //   })
+    //   .attr("height", d => {
+    //     console.log(d);
+    //     console.log(d[0]);
+    //     console.log(d[1]);
+    //     console.log(y(d[0] - d[1]));
+    //     return y(d[0]) - y(d[1]);
+    //   });
+
+    svg.selectAll("g").remove();
+
+    svg
+      .append("g")
+      .selectAll("g")
+      .data(series)
+      .enter()
+      .append("g")
+      .attr("fill", d => z(d.key))
+      .selectAll("rect")
+      .data(d => d)
+      .enter()
+      .append("rect")
+      .attr("width", x.bandwidth)
+      .attr("x", d => x(d.data.label))
+      .attr("y", d => y(d[1]))
+      .attr("height", d => y(d[0]) - y(d[1]));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${y(0)})`)
+      .call(d3.axisBottom(x));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y));
   }
 
   render() {
@@ -126,9 +321,9 @@ class DashboardPage extends React.Component {
               />
             </Col>
           </Row>
-          {/*
-          */}
         </Container>
+        <svg width="960" height="500" />
+        <div id="jason" />
       </div>
     );
   }

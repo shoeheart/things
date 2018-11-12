@@ -2,7 +2,7 @@
 
 class AdoptAnimalJob
   include Delayed::RecurringJob
-  run_every 20.seconds
+  run_every 2.seconds
   queue "batch"
 
   def initialize
@@ -10,8 +10,17 @@ class AdoptAnimalJob
 
   def perform
     Delayed::Worker.logger.debug "AdoptAnimalJob: Start"
-    adoptable_animal = Animal.sheltered.shuffle.first
-    adopter = Person.eligible_to_adopt.shuffle.first
+    adoptable_animal = Animal
+      .sheltered
+      .order(Arel.sql("random()"))
+      .limit(1)
+      .first
+
+    adopter = Person
+      .eligible_to_adopt
+      .order(Arel.sql("random()"))
+      .limit(1)
+      .first
 
     Delayed::Worker.logger.debug(
       "AdoptAnimalJob: Adoptable Animal: #{adoptable_animal}"

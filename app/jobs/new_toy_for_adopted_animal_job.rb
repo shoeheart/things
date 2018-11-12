@@ -2,7 +2,7 @@
 
 class NewToyForAdoptedAnimalJob
   include Delayed::RecurringJob
-  run_every 9.seconds
+  run_every 4.seconds
   queue "batch"
 
   def initialize
@@ -11,7 +11,11 @@ class NewToyForAdoptedAnimalJob
   def perform
     Delayed::Worker.logger.debug "NewToyForAdoptedAnimalJob: Start"
 
-    receiving_animal = Animal.eligible_to_receive_toy.shuffle.first
+    receiving_animal = Animal
+      .eligible_to_receive_toy
+      .order(Arel.sql("random()"))
+      .limit(1)
+      .first
 
     if receiving_animal
       Logidze.with_meta(responsible_id: receiving_animal.person.email) {
