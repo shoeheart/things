@@ -24,7 +24,7 @@ class NewPersonJob
     }
 
     Delayed::Worker.logger.debug(
-      "NewPersonJob: Created person #{p.first_name} #{p.last_name}"
+      "NewPersonJob: Created person #{first_name} #{last_name}"
     )
 
     Delayed::Worker.logger.debug "NewPersonJob: Done"
