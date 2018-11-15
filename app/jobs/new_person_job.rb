@@ -2,7 +2,7 @@
 
 class NewPersonJob
   include Delayed::RecurringJob
-  run_every 3.seconds
+  run_every 30.seconds
   queue "batch"
 
   def initialize

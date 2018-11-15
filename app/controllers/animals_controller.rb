@@ -160,5 +160,6 @@ class AnimalsController < ApplicationController
           people.email
         ")
         .order("animals.name, species.name")
+        .limit(250)
     end
 end

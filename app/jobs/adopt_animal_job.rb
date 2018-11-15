@@ -2,7 +2,7 @@
 
 class AdoptAnimalJob
   include Delayed::RecurringJob
-  run_every 2.seconds
+  run_every 20.seconds
   queue "batch"
 
   def initialize
