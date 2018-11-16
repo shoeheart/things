@@ -12,4 +12,9 @@ RSpec.describe Animal, type: :model do
     expect(animal.name).to match(/animal_\d+/)
     expect(animal.id).to be > 0
   end
+
+  it { should have_one( :animal_adoption ) }
+  it { should have_one( :person ).through( :animal_adoption ) }
+  it { should belong_to( :species ) }
+  it { should have_many( :toys ) }
 end

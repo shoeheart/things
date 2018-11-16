@@ -13,4 +13,7 @@ RSpec.describe Person, type: :model do
     expect(person.last_name).to match(/last_\d+/)
     expect(person.id).to be > 0
   end
+
+  it { should have_many( :animal_adoptions ) }
+  it { should have_many( :animals ).through( :animal_adoptions ) }
 end
