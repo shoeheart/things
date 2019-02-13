@@ -111,11 +111,12 @@ VAR='...'
 sudo systemctl stop things.target
 cd /workspace/things
 git pull
-bundle install
+RAILS_ENV=production bundle install
 # first time rails won't be visible in path so logout and back in
-rails webpacker:clobber
-yarn install
-NODE_ENV=production bundle exec rails assets:precompile
+RAILS_ENV=production bundle exec rails webpacker:clobber
+rm -rf node_modules
+NODE_ENV=production yarn install
+RAILS_ENV=production NODE_ENV=production bundle exec rails assets:precompile
 DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production bundle exec rails db:reset
 sudo shutdown -r now
 
