@@ -1,6 +1,6 @@
+yarn add @babel/core
 yarn add @babel/preset-react
 yarn add https://github.com/rails/webpacker.git
-yarn add auth0-lock
 yarn add aws-sdk
 yarn add axios
 yarn add classnames
@@ -19,6 +19,7 @@ yarn add react-dom
 yarn add react_ujs
 yarn add bootstrap
 yarn add reactstrap
+yarn add webpack
 
 yarn add babel-eslint --dev
 yarn add eslint --dev
