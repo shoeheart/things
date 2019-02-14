@@ -13,6 +13,7 @@ gem "logidze"
 gem "rails"
 gem "pg"
 gem "puma"
+gem "postmark-rails"
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "webpacker", git: "https://github.com/rails/webpacker.git"

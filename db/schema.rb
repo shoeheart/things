@@ -250,7 +250,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
   SQL
 
   # call this after table creation
-  def log_and_prevent_deletion(table,black_list_columns)
+  def log_and_prevent_deletion(table, black_list_columns)
     raise "Invalid blacklist #{black_list_columns}" unless
       black_list_columns.is_a?(Array)
 
@@ -290,7 +290,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
       using: :btree
     )
   end
-  log_and_prevent_deletion("species",%w(lock_version))
+  log_and_prevent_deletion("species", %w(lock_version))
 
   create_table "toy_types", force: :cascade do |t|
     t.string "name", null: false
@@ -304,7 +304,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
       using: :btree
     )
   end
-  log_and_prevent_deletion("toy_types",%w(lock_version))
+  log_and_prevent_deletion("toy_types", %w(lock_version))
 
   create_table "animals", force: :cascade do |t|
     t.string "name", null: false
@@ -324,7 +324,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
     t.jsonb "log_data", null: false
     t.integer "lock_version", null: false, default: 0
   end
-  log_and_prevent_deletion("animals",%w(lock_version))
+  log_and_prevent_deletion("animals", %w(lock_version))
 
   create_table "toys", force: :cascade do |t|
     t.date "acquired_on", null: false
@@ -353,7 +353,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
     t.jsonb "log_data", null: false
     t.integer "lock_version", null: false, default: 0
   end
-  log_and_prevent_deletion("toys",%w(lock_version))
+  log_and_prevent_deletion("toys", %w(lock_version))
 
   create_table "people", force: :cascade do |t|
     t.string "first_name", null: false
@@ -364,7 +364,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
     t.jsonb "log_data", null: false
     t.integer "lock_version", null: false, default: 0
   end
-  log_and_prevent_deletion("people",%w(lock_version))
+  log_and_prevent_deletion("people", %w(lock_version))
 
   create_table "animal_adoptions", force: :cascade do |t|
     t.date "adopted_on", null: false
@@ -402,7 +402,28 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
       using: :btree
     )
   end
-  log_and_prevent_deletion("animal_adoptions",%w(lock_version))
+  log_and_prevent_deletion("animal_adoptions", %w(lock_version))
+
+  create_table "postmark_webhooks", force: :cascade do |t|
+    t.jsonb "payload", null: false
+    t.timestamps
+    t.index(
+      ["payload"],
+      name: "index_postmark_webhooks_payload",
+      using: :gin
+    )
+  end
+
+  create_table "postmark_inbounds", force: :cascade do |t|
+    t.jsonb "payload", null: false
+    t.timestamps
+    t.index(
+      ["payload"],
+      name: "index_postmark_inbounds_payload",
+      using: :gin
+    )
+  end
+
 
   create_table :delayed_jobs, force: true do |t|
     t.integer :priority, default: 0, null: false # Allows some jobs to jump to the front of the queue

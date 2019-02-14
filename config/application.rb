@@ -40,6 +40,12 @@ module Things
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    # Add Postmark
+    config.action_mailer.delivery_method = :postmark
+    config.action_mailer.postmark_settings = {
+      api_token: Rails.application.credentials.dig(:postmark, :api_token)
+    }
+
     config.generators do |g|
       g.test_framework false
       g.stylesheets false
