@@ -12,4 +12,15 @@
     <%= yield %>
     <%= javascript_pack_tag 'application' %>
   </body>
+
+<script>
+  window.ReboundSettings = {
+    publicToken: "t5dlecskh1cbelpg5ks72p",
+    email: "TODO: add current_user_email here",
+    actionLabel: "Update email",
+    actionUrl: "https://things.codebarn.com/edit_email",
+  }
+</script>
+<script>(function(r,e,b,o,u,n,d){if(r.Rebound)return;d=function(){o="script";u=e.createElement(o);u.type="text/javascript";u.src=b;u.async=true;n=e.getElementsByTagName(o)[0];n.parentNode.insertBefore(u,n)};if(r.attachEvent){r.attachEvent("onload",d)}else{r.addEventListener("load",d,false)}})(window,document,"https://rebound.postmarkapp.com/widget/1.0");</script>
+
 </html>
