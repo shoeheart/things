@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   post Rails.application.credentials.dig(:postmark, :inbound_url) =>
     "postmark_inbound#create"
 
+  post Rails.application.credentials.dig(:slack, :webhook_url) =>
+    "slack_webhook#create"
+
   # uptime health monitoring
   get "/ping" => "application#ping"
 end

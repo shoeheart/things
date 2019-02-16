@@ -424,6 +424,31 @@ ActiveRecord::Schema.define(version: 2018_07_25_105802) do
     )
   end
 
+  create_table "slack_webhooks", force: :cascade do |t|
+    t.string :token
+    t.string :team_id
+    t.string :team_domain
+    t.string :enterprise_id
+    t.string :enterprise_name
+    t.string :channel_id
+    t.string :channel_name
+    t.string :user_id
+    t.string :user_name
+    t.string :command
+    t.index(
+      ["command"],
+      name: "index_slack_webhooks_command"
+    )
+    t.string :text
+    t.index(
+      ["text"],
+      name: "index_slack_webhooks_text"
+    )
+    t.string :response_url
+    t.string :trigger_id
+    t.string :ssl_check
+    t.timestamps
+  end
 
   create_table :delayed_jobs, force: true do |t|
     t.integer :priority, default: 0, null: false # Allows some jobs to jump to the front of the queue
