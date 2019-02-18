@@ -79,15 +79,10 @@ class SlackWebhook < ApplicationRecord
         "attachments": [
           {
             "text":
-              "animals adopted: #{Animal.adopted.count}\n" +
-              "animals sheltered: #{Animal.sheltered.count}\n" +
-              "animals died: #{Animal.unscoped.deleted.count}\n" +
               "people: #{Person.count}\n" +
               "people who have adopted: #{Person.has_adopted.count}\n" +
               "people eligible to adopt: #{Person.eligible_to_adopt.count}\n" +
               "people who have not adopted: #{Person.has_not_adopted.count}\n" +
-              "toys owned: #{Toy.count}\n" +
-              "toys lost: #{Toy.unscoped.deleted.count}\n" +
               "*Enjoy your day!* :smile:"
           }
         ]
