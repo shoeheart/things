@@ -14,6 +14,7 @@ gem "rails"
 gem "pg"
 gem "puma"
 gem "postmark-rails"
+gem "faraday"
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "webpacker", git: "https://github.com/rails/webpacker.git"
