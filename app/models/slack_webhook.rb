@@ -17,25 +17,24 @@ class SlackWebhook < ApplicationRecord
 
   private
     def generate_dashboard
-      [
-        {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
+      {
+        "response_type": "ephemeral",
+        "text": "*Latest Things Dashboard*",
+        "attachments": [
+          {
             "text":
-              "*Latest Things Dashboard*\n" +
-              ">animals_adopted: #{Animal.adopted.count}\n" +
-              ">animals_sheltered: #{Animal.sheltered.count}\n" +
-              ">animals_died: #{Animal.unscoped.deleted.count}\n" +
-              ">people: #{Person.count}\n" +
-              ">people_who_have_adopted: #{Person.has_adopted.count}\n" +
-              ">people_eligible_to_adopt: #{Person.eligible_to_adopt.count}\n" +
-              ">people_who_have_not_adopted: #{Person.has_not_adopted.count}\n" +
-              ">toys_owned: #{Toy.count}\n" +
-              ">toys_lost: #{Toy.unscoped.deleted.count}\n" +
-              "Enjoy your day!"
+              "animals adopted: #{Animal.adopted.count}\n" +
+              "animals sheltered: #{Animal.sheltered.count}\n" +
+              "animals died: #{Animal.unscoped.deleted.count}\n" +
+              "people: #{Person.count}\n" +
+              "people who have adopted: #{Person.has_adopted.count}\n" +
+              "people eligible to adopt: #{Person.eligible_to_adopt.count}\n" +
+              "people who have not adopted: #{Person.has_not_adopted.count}\n" +
+              "toys owned: #{Toy.count}\n" +
+              "toys lost: #{Toy.unscoped.deleted.count}\n" +
+              "*Enjoy your day!* :smile:"
           }
-        }
-      ]
+        ]
+      }
     end
 end
