@@ -25,6 +25,8 @@ class SlackWebhook < ApplicationRecord
         generate_dashboard
       when "animals"
         generate_animals
+      when "people"
+        generate_people
       when "toys"
         generate_toys
       else
