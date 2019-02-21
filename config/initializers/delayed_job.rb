@@ -12,6 +12,7 @@ Delayed::Worker.delay_jobs = !Rails.env.test?
 Delayed::Worker.logger =
   Logger.new(File.join(Rails.root, "log", "delayed_job.log"))
 Delayed::Worker.queue_attributes = {
+  mailers: { priority: 15 },
   batch: { priority: 10 },
   interactive: { priority: 5 },
   immediate: { priority: 0 }
