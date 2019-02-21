@@ -4,3 +4,4 @@ default: QUEUE=default bundle exec rails jobs:work
 batch: QUEUE=batch bundle exec rails jobs:work
 interactive: QUEUE=interactive bundle exec rails jobs:work
 immediate: QUEUE=immediate bundle exec rails jobs:work
+mailers: QUEUE=mailers bundle exec rails jobs:work
