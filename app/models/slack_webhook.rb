@@ -115,7 +115,7 @@ class SlackWebhook < ApplicationRecord
         "attachments": [
           {
             "text":
-              "Email queued for later delivery by DelayedJob" +
+              "Email queued for later delivery by DelayedJob\n" +
               "*Enjoy your day!* :smile:"
           }
         ]
