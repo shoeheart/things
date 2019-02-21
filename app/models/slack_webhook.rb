@@ -21,6 +21,8 @@ class SlackWebhook < ApplicationRecord
       case command
       when nil
         generate_unknown_command
+      when "postmark"
+        generate_postmark # side effect actually schedules delivery
       when "dashboard"
         generate_dashboard
       when "animals"
@@ -104,6 +106,22 @@ class SlackWebhook < ApplicationRecord
       }
     end
 
+    def generate_postmark
+      TestMailer.with({}).test_email.deliver_later
+
+      {
+        "response_type": "ephemeral",
+        "text": "*Send Postmark Test Email*",
+        "attachments": [
+          {
+            "text":
+              "Email queued for later delivery by DelayedJob" +
+              "*Enjoy your day!* :smile:"
+          }
+        ]
+      }
+    end
+
     def generate_unknown_command
       {
         "response_type": "ephemeral",
@@ -111,7 +129,7 @@ class SlackWebhook < ApplicationRecord
         "attachments": [
           {
             "text":
-              "[dashboard | animals | people | toys]\n" +
+              "[dashboard | animals | people | toys | postmark]\n" +
               "*Try again!* :smile:"
           }
         ]
