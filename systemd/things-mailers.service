@@ -1,0 +1,18 @@
+[Unit]
+Description=Things DelayedJob Mailers queue
+PartOf=things.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/workspace/things
+Environment=PORT=5400
+Environment=RAILS_ENV=production
+Environment=QUEUE=mailers
+ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails jobs:work
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=things-mailers.service
+KillMode=mixed
+TimeoutStopSec=5
