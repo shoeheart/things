@@ -44,6 +44,7 @@ group :development, :test do
   gem "rspec-rails"
   # gem "faker" # pulled out for prod too for now while still seeding prod
   gem "rubocop"
+  gem "rubocop-performance"
   gem "factory_bot"
   gem "factory_bot_rails"
   gem "dotenv"
