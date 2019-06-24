@@ -1,6 +1,6 @@
 # README
 
-"Things" is an example application to practice and demonstrate use of numerous technologies useful in a website.  
+"Things" is an example application to practice and demonstrate use of numerous technologies useful in a website.
 
 #### View Application
 You may view the running application, hosted on a t2.micro instance (automatically started via systemd scripts) and free-tier RDS Postgresql instance at AWS:
@@ -32,7 +32,7 @@ Currently, the db:seed creates 10 Person instances and populates Species and Toy
   * Oldest of adopted Animal dies, freeing up a position for a new AnimalAdoption
 
 #### Dashboard
-View the Dashboard to see counts of People, Animals, Adoptions, and Toys with automatic refresh as the background jobs cause Animals to be added to shelter, adopted, receive a random toy, or perish. 
+View the Dashboard to see counts of People, Animals, Adoptions, and Toys with automatic refresh as the background jobs cause Animals to be added to shelter, adopted, receive a random toy, or perish.
 
 #### Soft Delete Behavior
 The system is set to disallow deletion of any actual database rows, and rather uses an is_deleted flag on each table.  This allows the log_data field on each row for each table to record and retain the full audit history of what data changed, when, and under whose authority.
@@ -67,7 +67,7 @@ The system is set to disallow deletion of any actual database rows, and rather u
 
 #### Running locally
 
-I have used `rails credentials:edit` to set values for connecting to AWS RDS Postgres on production.  In development and test, you can just install Postgres.app for Mac or other normal way on Linux.  
+I have used `rails credentials:edit` to set values for connecting to AWS RDS Postgres on production.  In development and test, you can just install Postgres.app for Mac or other normal way on Linux.
 
 You will need to generate your own credentials file to run locally.  Execute `rails credentials:edit` and it will create `config/secrets.yml` file which is excluded via .gitignore.  It also creates `config/credentials.yml.enc` which is included in git, but you will need to delete it and generate your own with the following information in order for this to work:
 
@@ -102,9 +102,9 @@ slack:
 
 * Unit Testing
 
-* Selenium Integration Testing
-
 * Permissions / Roles (i.e. Administrator, PetAdopter, etc.)
+
+* Selenium Integration Testing
 
 * ActiveStorage image and attachment storage
 
