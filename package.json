@@ -2,28 +2,28 @@
   "name": "things",
   "private": true,
   "dependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-react": "^7.6.3",
     "@rails/webpacker": "https://github.com/rails/webpacker.git",
-    "aws-sdk": "^2.444.0",
-    "axios": "^0.18.0",
+    "aws-sdk": "^2.562.0",
+    "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
-    "d3": "^5.9.2",
-    "eslint-plugin-react": "^7.12.4",
-    "jquery": "^3.4.0",
+    "d3": "^5.12.0",
+    "eslint-plugin-react": "^7.16.0",
+    "jquery": "^3.4.1",
     "normalize.css": "^8.0.1",
-    "popper.js": "^1.15.0",
+    "popper.js": "^1.16.0",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.1.2",
-    "postcss-preset-env": "^6.6.0",
+    "postcss-preset-env": "^6.7.0",
     "prop-types": "^15.7.2",
     "rails-ujs": "^5.2.3",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react_ujs": "^2.5.0",
-    "reactstrap": "^8.0.0",
-    "webpack": "^4.30.0"
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react_ujs": "^2.6.0",
+    "reactstrap": "^8.1.1",
+    "webpack": "^4.41.2"
   },
   "husky": {
     "hooks": {
@@ -31,40 +31,35 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "config/webpack/**/*.js": [
-        "prettier --write",
-        "eslint",
-        "git add"
-      ],
-      "frontend/**/*.js": [
-        "prettier --write",
-        "eslint",
-        "git add"
-      ],
-      "frontend/**/*.css": [
-        "prettier --write",
-        "stylelint --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "frontend/styles/reduction.css"
+    "config/webpack/**/*.js": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ],
+    "frontend/**/*.js": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ],
+    "frontend/**/*.css": [
+      "prettier --write",
+      "stylelint --fix",
+      "git add"
     ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.2.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-import-resolver-webpack": "^0.11.1",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-prettier": "^3.0.1",
-    "husky": "^2.1.0",
-    "lint-staged": "^8.1.5",
-    "prettier": "^1.17.0",
-    "stylelint": "^10.0.1",
-    "stylelint-config-standard": "^18.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "stylelint": "^11.1.1",
+    "stylelint-config-standard": "^19.0.0",
+    "webpack-dev-server": "^3.9.0"
   }
 }

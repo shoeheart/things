@@ -32,13 +32,13 @@ toy_types = ToyType.all.to_a
 10.times { |i|
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
-  email = Faker::Internet.unique.email("#{first_name} #{last_name}")
+  email = Faker::Internet.unique.email(name: "#{first_name} #{last_name}")
   Logidze.with_meta(responsible_id: email) {
     p = Person.create(
       first_name: first_name,
       last_name: last_name,
       email: email,
-      birth_date: Faker::Date.between(8.years.ago, 50.years.ago),
+      birth_date: Faker::Date.between(from: 8.years.ago, to: 50.years.ago),
     )
   }
 }
